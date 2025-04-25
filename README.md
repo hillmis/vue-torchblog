@@ -1,10 +1,10 @@
-# Vue Torch - 资源分享平台
+# Vue-TorchBlog
 
 ![Vue 3](https://img.shields.io/badge/Vue-3.x-brightgreen)
 ![Vite](https://img.shields.io/badge/Vite-5.x-purple)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-blue)
 
-Vue Torch 是一个使用 Vue 3 和 Vite 构建的资源分享平台，提供博客文章阅读、资源下载、用户互动等功能。该项目采用现代前端技术栈，提供流畅的用户体验和丰富的功能。
+Vue-TorchBlog 是一个使用 Vue 3 和 Vite 构建的资源分享平台，提供博客文章阅读、资源下载、用户互动等功能。该项目采用现代前端技术栈，提供流畅的用户体验和丰富的功能。
 
 ## 功能特点
 
