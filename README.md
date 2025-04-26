@@ -66,10 +66,9 @@ vue-torch/
 1. 克隆仓库
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/hillmis/vue-torchblog.git
    cd vue-torch
    ```
-
 2. 安装依赖
 
    ```bash
@@ -79,7 +78,6 @@ vue-torch/
    # 或
    pnpm install
    ```
-
 3. 配置环境变量
    复制 `.env.example` 到 `.env`，并根据需要更新配置：
 
@@ -88,9 +86,9 @@ vue-torch/
    ```
 
    需要设置的主要环境变量：
+
    - GitHub OAuth 配置 (如果使用 GitHub 登录)
    - 后端 API 地址 (如果有)
-
 4. 启动开发服务器
 
    ```bash
@@ -100,7 +98,6 @@ vue-torch/
    # 或
    pnpm dev
    ```
-
 5. 构建生产版本
 
    ```bash
@@ -141,7 +138,6 @@ vue-torch/
    ```bash
    npm run build
    ```
-
 2. 部署 `dist` 目录到您选择的托管服务
 
 ## 贡献指南
