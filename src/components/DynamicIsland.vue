@@ -159,7 +159,6 @@ export default {
       hasContent: false, // 新增：是否有实际内容
     }
   },
-
   watch: {
     // 监听内容变化
     '$data': {
@@ -171,7 +170,6 @@ export default {
       immediate: true
     }
   },
-
   mounted() {
     // 监听主题变化
     this.observer = new MutationObserver(this.checkTheme)
@@ -182,11 +180,9 @@ export default {
     // 初始化主题
     this.checkTheme()
     this.startTypewriter()
-
     // 添加窗口大小改变监听
     window.addEventListener('resize', this.checkTextOverflow)
   },
-
   beforeUnmount() {
     // 清理观察器
     if (this.observer) {
@@ -197,7 +193,6 @@ export default {
     }
     window.removeEventListener('resize', this.checkTextOverflow)
   },
-
   methods: {
     startTypewriter() {
       // 只在没有实际内容时启动打字机效果
@@ -205,7 +200,6 @@ export default {
         this.displayText = this.typewriterText
         return
       }
-
       let index = 0
       this.displayText = ""
       if (this.typewriterInterval) {
@@ -227,7 +221,6 @@ export default {
         }
       }, 150) // 每个字符的打字间隔
     },
-
     show(options) {
       this.type = options.type || 'notification'
       this.status = options.status || 'info'
@@ -241,7 +234,6 @@ export default {
       this.expanded = options.expanded || false
       this.defaultIcon = !options.title
       this.hasContent = true // 更新内容状态
-
       if (options.duration) {
         setTimeout(() => {
           this.hide()
@@ -251,7 +243,6 @@ export default {
         clearInterval(this.typewriterInterval)
       }
     },
-
     hide() {
       this.expanded = false
       this.title = ''
@@ -262,11 +253,9 @@ export default {
       // 重新启动打字机效果
       this.startTypewriter()
     },
-
     checkTextOverflow() {
       const textElement = this.$refs.textContent
       if (!textElement) return
-
       // 获取文本实际宽度
       this.textWidth = textElement.scrollWidth
       
@@ -332,47 +321,39 @@ export default {
 .island-leave-active {
   transition: all 0.3s ease;
 }
-
 .island-enter-from,
 .island-leave-to {
   transform: translateY(-20px);
   opacity: 0;
 }
-
 /* 玻璃拟态效果 */
 .backdrop-blur-lg {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
-
 /* 添加高度过渡效果 */
 .backdrop-blur-lg {
   transition: height 0.3s ease-in-out, background-color 0.3s ease;
 }
-
 /* 设置展开状态的最小内边距 */
 .h-auto {
   min-height: 3rem;
   padding-bottom: 1rem;
 }
-
 /* 适配深色模式的阴影 */
 .shadow-lg {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
               0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
-
 .dark-mode .shadow-lg {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3),
               0 4px 6px -2px rgba(0, 0, 0, 0.2);
 }
-
 /* 火把动效 */
 .flame-icon {
   color: #f59e0b;
   animation: flicker 3s infinite alternate;
 }
-
 @keyframes flicker {
   0%, 100% {
     opacity: 1;
@@ -392,7 +373,6 @@ export default {
                  0 0 18px #f59e0b;
   }
 }
-
 /* 自适应过渡 */
 .w-auto {
   transition: width 0.3s ease-in-out;
@@ -400,12 +380,10 @@ export default {
 .text-sm {
   transition: opacity 0.3s ease;
 }
-
 /* 添加文字悬停效果 */
 .cursor-pointer:hover .text-sm {
   opacity: 0.8;
 }
-
 /* 文字溢出处理 */
 .truncate {
   white-space: nowrap;
@@ -413,18 +391,15 @@ export default {
   text-overflow: ellipsis;
   max-width: 100%;
 }
-
 /* 确保图标不被压缩 */
 .shrink-0 {
   flex-shrink: 0;
 }
-
 /* 打字机效果相关样式 */
 .typewriter {
   border-right: 2px solid;
   animation: cursor 0.8s infinite;
 }
-
 @keyframes cursor {
   from, to {
     border-color: transparent;
@@ -433,7 +408,6 @@ export default {
     border-color: currentColor;
   }
 }
-
 /* 优化文字显示 */
 .text-sm {
   letter-spacing: 0.05em;

@@ -1,651 +1,551 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Torch-火炬博客</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <style>
-    :root {
-      --bg-primary: #454545;
-      --bg-secondary: #1e293b00;
-      --text-primary: #f8fafc;
-      --text-secondary: #94a3b8;
-      --accent: #38bdf8;
-      --accent-hover: #7dd3fc;
-      --card-bg: rgba(0, 0, 0, 0.17);
-      --card-border: rgba(68, 68, 68, 0);
-      --footer-bg: rgba(0, 0, 0, 0.2);
-      --footer-text: #94a3b8;
-      --footer-link: #cbd5e1;
-    }
-
-    .dark-mode {
-      --bg-primary: #26292d;
-      --bg-secondary: #1e293b00;
-      --text-primary: #f8fafc;
-      --text-secondary: #94a3b8;
-      --accent: #38bdf8;
-      --accent-hover: #7dd3fc;
-      --footer-bg: rgba(0, 0, 0, 0.2);
-    }
-
-    .light-mode {
-      --bg-primary: #f1f5f9;
-      --bg-secondary: #e2e8f0;
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --accent: #2563eb;
-      --accent-hover: #3b82f6;
-      --card-bg: rgba(226, 232, 240, 0.7);
-      --card-border: rgba(37, 100, 235, 0);
-      --footer-bg: #e2e8f0;
-      --footer-text: #475569;
-      --footer-link: #334155;
-    }
-
-    body {
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      transition: background-color 0.3s, color 0.3s;
-      -webkit-tap-highlight-color: transparent;
-      overflow-x: hidden;
-    }
-
-    .gradient-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--card-border);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .gradient-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .flame-icon {
-      color: #f59e0b;
-      text-shadow: 0 0 5px #f59e0b;
-      animation: flicker 2s infinite alternate;
-    }
-
-    @keyframes flicker {
-
-      0%,
-      100% {
-        opacity: 1;
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Torch-火炬博客</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="floating-island.js"></script>
+    <script>
+      // 创建灵动岛实例
+      const island = new FloatingIsland("floating-island-container", {
+        defaultType: "notification", // 默认显示的类型
+        defaultExpanded: false, // 初始是否展开
+        darkMode: true, // 是否使用暗黑模式
+      });
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --bg-primary: #454545;
+        --bg-secondary: #1e293b00;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --accent: #38bdf8;
+        --accent-hover: #7dd3fc;
+        --card-bg: rgba(0, 0, 0, 0.17);
+        --card-border: rgba(68, 68, 68, 0);
+        --footer-bg: rgba(0, 0, 0, 0.2);
+        --footer-text: #94a3b8;
+        --footer-link: #cbd5e1;
       }
 
-      50% {
-        opacity: 0.7;
-      }
-    }
-
-    .btn-accent {
-      background-color: var(--accent);
-      color: white;
-      transition: background-color 0.3s, transform 0.2s;
-    }
-
-    .btn-accent:hover {
-      background-color: var(--accent-hover);
-      transform: translateY(-2px);
-    }
-
-    .btn-accent:active {
-      transform: translateY(0);
-    }
-
-    .nav-link {
-      transition: color 0.3s, transform 0.2s;
-    }
-
-    .nav-link:hover {
-      color: var(--accent);
-      transform: translateX(5px);
-    }
-
-    .search-input {
-      background-color: var(--bg-secondary);
-      border: 1px solid var(--card-border);
-      color: var(--text-primary);
-    }
-
-    .search-input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
-    }
-
-    .ad-banner {
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-      animation: gradient 8s ease infinite;
-      background-size: 200% 200%;
-    }
-
-    @keyframes gradient {
-      0% {
-        background-position: 0% 50%;
+      .dark-mode {
+        --bg-primary: #26292d;
+        --bg-secondary: #1e293b00;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --accent: #38bdf8;
+        --accent-hover: #7dd3fc;
+        --footer-bg: rgba(0, 0, 0, 0.2);
       }
 
-      50% {
-        background-position: 100% 50%;
+      .light-mode {
+        --bg-primary: #f1f5f9;
+        --bg-secondary: #e2e8f0;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --accent: #2563eb;
+        --accent-hover: #3b82f6;
+        --card-bg: rgba(226, 232, 240, 0.7);
+        --card-border: rgba(37, 100, 235, 0);
+        --footer-bg: #e2e8f0;
+        --footer-text: #475569;
+        --footer-link: #334155;
       }
 
-      100% {
-        background-position: 0% 50%;
-      }
-    }
-
-    .carousel-item {
-      min-width: 100%;
-      transition: transform 0.5s ease;
-    }
-
-    .carousel-indicator {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: var(--text-secondary);
-      transition: background-color 0.3s;
-    }
-
-    .carousel-indicator.active {
-      background-color: var(--accent);
-    }
-
-    .qr-code {
-      background: white;
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .timeline-item::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 2px;
-      height: 100%;
-      background-color: var(--accent);
-    }
-
-    .timeline-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background-color: var(--accent);
-      position: absolute;
-      left: -5px;
-      top: 5px;
-    }
-
-    /* 博客文章样式 */
-    .article-card {
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-
-    .article-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .article-tag {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      margin-right: 6px;
-    }
-
-    .article-content {
-      line-height: 1.8;
-    }
-
-    .article-content img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-      margin: 1rem 0;
-    }
-
-    .article-content h2 {
-      font-size: 1.5rem;
-      margin: 1.5rem 0 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--text-secondary);
-    }
-
-    .article-content h3 {
-      font-size: 1.25rem;
-      margin: 1.25rem 0 0.75rem;
-    }
-
-    .article-content blockquote {
-      border-left: 4px solid var(--accent);
-      padding-left: 1rem;
-      margin: 1rem 0;
-      color: var(--text-secondary);
-      font-style: italic;
-    }
-
-    .article-content pre {
-      background-color: var(--bg-secondary);
-      padding: 1rem;
-      border-radius: 6px;
-      overflow-x: auto;
-      margin: 1rem 0;
-    }
-
-    .article-content code {
-      font-family: Consolas, Monaco, "Andale Mono", monospace;
-      background-color: var(--bg-secondary);
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-      font-size: 0.9em;
-    }
-
-    .article-meta {
-      color: var(--text-secondary);
-      font-size: 0.875rem;
-    }
-
-    .article-pagination {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 2rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--text-secondary);
-    }
-
-    .article-comments {
-      margin-top: 2rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--text-secondary);
-    }
-
-    .comment-item {
-      padding: 1rem 0;
-      border-bottom: 1px solid var(--text-secondary);
-    }
-
-    .comment-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: var(--bg-secondary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .toc-container {
-      position: sticky;
-      top: 20px;
-      max-height: calc(100vh - 40px);
-      overflow-y: auto;
-    }
-
-    .toc-list {
-      list-style-type: none;
-      padding-left: 1rem;
-    }
-
-    .toc-list li {
-      margin-bottom: 0.5rem;
-    }
-
-    .toc-list a {
-      color: var(--text-secondary);
-      transition: color 0.2s;
-    }
-
-    .toc-list a:hover {
-      color: var(--accent);
-    }
-
-    .toc-list .toc-level-2 {
-      padding-left: 1rem;
-    }
-
-    .toc-list .toc-level-3 {
-      padding-left: 2rem;
-    }
-
-    .toc-title {
-      font-weight: bold;
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--text-secondary);
-    }
-
-    /* 页面切换动画 */
-    .page-transition {
-      transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-
-    .page-enter {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    .page-enter-active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .page-exit {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .page-exit-active {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-
-    /* 移动端菜单样式 */
-    .mobile-menu {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 80%;
-      max-width: 300px;
-      height: 100vh;
-      background-color: var(--bg-secondary);
-      z-index: 1000;
-      transition: right 0.3s ease;
-      overflow-y: auto;
-    }
-
-    .mobile-menu.active {
-      right: 0;
-    }
-
-    .mobile-menu-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .mobile-menu-overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .left-sidebar {
-      position: sticky;
-      top: 20px;
-      height: calc(100vh - 40px);
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--accent) var(--bg-secondary);
-    }
-
-    .left-sidebar::-webkit-scrollbar {
-      width: 0;
-    }
-
-    .left-sidebar::-webkit-scrollbar-track {
-      background: var(--bg-secondary);
-    }
-
-    .left-sidebar::-webkit-scrollbar-thumb {
-      background-color: var(--accent);
-      border-radius: 6px;
-    }
-
-    @media (max-width: 1024px) {
-      .main-layout {
-        grid-template-columns: 250px 1fr;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .main-layout {
-        grid-template-columns: 1fr;
+      body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        transition: background-color 0.3s, color 0.3s;
+        -webkit-tap-highlight-color: transparent;
+        overflow-x: hidden;
       }
 
-      .left-sidebar {
-        display: none;
+      .gradient-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--card-border);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
       }
 
-      .right-sidebar {
-        display: none;
+      .gradient-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .flame-icon {
+        color: #f59e0b;
+        text-shadow: 0 0 5px #f59e0b;
+        animation: flicker 2s infinite alternate;
+      }
+
+      @keyframes flicker {
+        0%,
+        100% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      .btn-accent {
+        background-color: var(--accent);
+        color: white;
+        transition: background-color 0.3s, transform 0.2s;
+      }
+
+      .btn-accent:hover {
+        background-color: var(--accent-hover);
+        transform: translateY(-2px);
+      }
+
+      .btn-accent:active {
+        transform: translateY(0);
+      }
+
+      .nav-link {
+        transition: color 0.3s, transform 0.2s;
+      }
+
+      .nav-link:hover {
+        color: var(--accent);
+        transform: translateX(5px);
+      }
+
+      .search-input {
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--card-border);
+        color: var(--text-primary);
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
       }
 
       .ad-banner {
-        flex-direction: column;
-        text-align: center;
-        padding: 12px;
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        animation: gradient 8s ease infinite;
+        background-size: 200% 200%;
       }
 
-      .ad-banner button {
-        margin-top: 8px;
-        width: 100%;
-      }
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
 
-      .resource-download .grid {
-        grid-template-columns: 1fr;
-        gap: 8px;
-      }
+        50% {
+          background-position: 100% 50%;
+        }
 
-      .daily-share .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .video-materials .grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-      }
-
-      .video-materials a {
-        padding: 8px;
-      }
-
-      .video-materials .text-sm {
-        font-size: 0.875rem;
-      }
-
-      .video-materials .text-xs {
-        font-size: 0.75rem;
-      }
-
-      a,
-      button {
-        min-height: 44px;
-        min-width: 44px;
-      }
-
-      input,
-      select,
-      textarea {
-        font-size: 16px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .video-materials .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .header .text-2xl {
-        font-size: 1.25rem;
-      }
-
-      .header .text-sm {
-        font-size: 0.75rem;
+        100% {
+          background-position: 0% 50%;
+        }
       }
 
       .carousel-item {
-        padding: 12px;
+        min-width: 100%;
+        transition: transform 0.5s ease;
       }
 
-      .carousel-item h3 {
-        font-size: 1rem;
+      .carousel-indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: var(--text-secondary);
+        transition: background-color 0.3s;
       }
 
-      .carousel-item p {
+      .carousel-indicator.active {
+        background-color: var(--accent);
+      }
+
+      .qr-code {
+        background: white;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 2px;
+        height: 100%;
+        background-color: var(--accent);
+      }
+
+      .timeline-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: var(--accent);
+        position: absolute;
+        left: -5px;
+        top: 5px;
+      }
+
+      /* 博客文章样式 */
+      .article-card {
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .article-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .article-tag {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        margin-right: 6px;
+      }
+
+      .article-content {
+        line-height: 1.8;
+      }
+
+      .article-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 1rem 0;
+      }
+
+      .article-content h2 {
+        font-size: 1.5rem;
+        margin: 1.5rem 0 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--text-secondary);
+      }
+
+      .article-content h3 {
+        font-size: 1.25rem;
+        margin: 1.25rem 0 0.75rem;
+      }
+
+      .article-content blockquote {
+        border-left: 4px solid var(--accent);
+        padding-left: 1rem;
+        margin: 1rem 0;
+        color: var(--text-secondary);
+        font-style: italic;
+      }
+
+      .article-content pre {
+        background-color: var(--bg-secondary);
+        padding: 1rem;
+        border-radius: 6px;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+
+      .article-content code {
+        font-family: Consolas, Monaco, "Andale Mono", monospace;
+        background-color: var(--bg-secondary);
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-size: 0.9em;
+      }
+
+      .article-meta {
+        color: var(--text-secondary);
         font-size: 0.875rem;
       }
 
-      .carousel-item button {
-        padding: 6px 12px;
-        font-size: 0.875rem;
+      .article-pagination {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--text-secondary);
       }
 
-      .container {
-        padding-left: 12px;
-        padding-right: 12px;
+      .article-comments {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--text-secondary);
       }
-    }
 
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border-width: 0;
-    }
-  </style>
-</head>
+      .comment-item {
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--text-secondary);
+      }
 
-<body class="dark-mode">
-  <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+      .comment-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: var(--bg-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-  <div class="mobile-menu" id="mobileMenu">
-    <div class="p-4 space-y-4">
-      <!-- 用户信息卡片 -->
-      <div class="gradient-card rounded-lg p-4 mb-4">
-        <div class="flex items-center mb-3">
-          <div class="w-12 h-12 rounded-full bg-gray-600 mr-3"></div>
-          <div>
-            <div class="font-medium">游客用户</div>
-            <div class="text-xs text-gray-400">未登录</div>
-          </div>
-        </div>
-        <button class="w-full btn-accent py-2 rounded-lg text-sm font-medium">
-          <i class="fas fa-sign-in-alt mr-2"></i>登录/注册
-        </button>
-      </div>
+      .toc-container {
+        position: sticky;
+        top: 20px;
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+      }
 
-      <!-- 搜索框 -->
-      <div class="gradient-card rounded-lg p-3 mb-4">
-        <div class="relative">
-          <input type="text" placeholder="输入关键词..." class="search-input w-full py-2 px-4 rounded-lg" />
-          <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
-      </div>
+      .toc-list {
+        list-style-type: none;
+        padding-left: 1rem;
+      }
 
-      <!-- 导航菜单 -->
-      <div class="gradient-card rounded-lg p-3 mb-4">
-        <h3 class="font-semibold mb-3 flex items-center">
-          <i class="fas fa-bars mr-2 text-accent"></i>
-          导航菜单
-        </h3>
-        <div class="space-y-2">
-          <a href="#" class="block nav-link p-2 rounded hover:bg-blue-900/30">
-            <i class="fas fa-home mr-2"></i>首页
-          </a>
-          <a href="#" class="block nav-link p-2 rounded hover:bg-blue-900/30">
-            <i class="fas fa-download mr-2"></i>资源
-          </a>
-          <a href="#" class="block nav-link p-2 rounded hover:bg-blue-900/30">
-            <i class="fas fa-video mr-2"></i>短剧
-          </a>
-          <a href="#" class="block nav-link p-2 rounded hover:bg-blue-900/30">
-            <i class="fas fa-music mr-2"></i>音乐
-          </a>
-          <a href="#" class="block nav-link p-2 rounded hover:bg-blue-900/30">
-            <i class="fas fa-gamepad mr-2"></i>游戏
-          </a>
-          <a href="#" class="block nav-link p-2 rounded hover:bg-blue-900/30">
-            <i class="fas fa-star mr-2"></i>每日
-          </a>
-          <a href="#blog" class="block nav-link p-2 rounded hover:bg-blue-900/30">
-            <i class="fas fa-blog mr-2"></i>博客文章
-          </a>
-        </div>
-      </div>
+      .toc-list li {
+        margin-bottom: 0.5rem;
+      }
 
-      <!-- 公告栏 -->
-      <div class="gradient-card rounded-lg p-3">
-        <h3 class="font-semibold mb-3 flex items-center">
-          <i class="fas fa-bullhorn mr-2 text-accent"></i>
-          公告栏
-        </h3>
-        <div class="text-xs space-y-2">
-          <div class="p-2 bg-blue-900/20 rounded">
-            <div class="font-medium">系统维护通知</div>
-            <div class="text-gray-400">4月15日 00:00-02:00</div>
-          </div>
-          <div class="p-2 bg-blue-900/20 rounded">
-            <div class="font-medium">资源更新公告</div>
-            <div class="text-gray-400">新增100+短剧资源</div>
-          </div>
-        </div>
-      </div>
+      .toc-list a {
+        color: var(--text-secondary);
+        transition: color 0.2s;
+      }
 
-      <button class="w-full btn-accent py-3 rounded-lg font-medium mt-4" id="closeMobileMenu">
-        <i class="fas fa-times mr-2"></i>关闭菜单
-      </button>
-    </div>
-  </div>
+      .toc-list a:hover {
+        color: var(--accent);
+      }
 
-  <!-- 顶部导航栏 -->
-  <header class="py-4 px-4 md:px-6 shadow-lg sticky top-0 z-50 bg-opacity-90 backdrop-blur-sm"
-    style="background-color: var(--bg-primary)">
-    <div class="container mx-auto flex justify-between items-center">
-      <div class="flex items-center space-x-2 md:space-x-4">
-        <i class="fas fa-fire flame-icon text-xl md:text-2xl"></i>
-        <h1 class="text-xl md:text-2xl font-bold">
-          Torch <span class="text-xs md:text-sm opacity-80">资源分享</span>
-        </h1>
-      </div>
-      <div class="hidden md:flex items-center space-x-4 md:space-x-6">
-        <a href="#" class="nav-link">首页</a>
-        <a href="#" class="nav-link">资源库</a>
-        <a href="#blog" class="nav-link">博客文章</a>
-        <a href="#" class="nav-link">每日分享</a>
-        <a href="#" class="nav-link">关于</a>
-      </div>
-      <div class="flex items-center space-x-3">
-        <button id="themeToggle" class="md:flex items-center nav-link">
-          <i class="fas fa-moon theme-toggle-icon mr-1"></i>
-          <span></span>
-        </button>
-        <button class="md:hidden text-xl" id="mobileMenuButton" aria-label="打开菜单">
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
-    </div>
-  </header>
+      .toc-list .toc-level-2 {
+        padding-left: 1rem;
+      }
 
-  <!-- 主内容区 -->
-  <div class="container mx-auto px-2 md:px-4 py-4 md:py-6">
-    <div class="main-layout grid grid-cols-12 gap-4 md:gap-6">
-      <!-- 左侧边栏 (显示在桌面) -->
-      <div class="left-sidebar col-span-3 hidden md:block">
+      .toc-list .toc-level-3 {
+        padding-left: 2rem;
+      }
+
+      .toc-title {
+        font-weight: bold;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--text-secondary);
+      }
+
+      /* 页面切换动画 */
+      .page-transition {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      .page-enter {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      .page-enter-active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .page-exit {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .page-exit-active {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      /* 移动端菜单样式 */
+      .mobile-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background-color: var(--bg-secondary);
+        z-index: 1000;
+        transition: right 0.3s ease;
+        overflow-y: auto;
+      }
+
+      .mobile-menu.active {
+        right: 0;
+      }
+
+      .mobile-menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .mobile-menu-overlay.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .left-sidebar {
+        position: sticky;
+        top: 20px;
+        height: calc(100vh - 40px);
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) var(--bg-secondary);
+      }
+
+      .left-sidebar::-webkit-scrollbar {
+        width: 0;
+      }
+
+      .left-sidebar::-webkit-scrollbar-track {
+        background: var(--bg-secondary);
+      }
+
+      .left-sidebar::-webkit-scrollbar-thumb {
+        background-color: var(--accent);
+        border-radius: 6px;
+      }
+
+      @media (max-width: 1024px) {
+        .main-layout {
+          grid-template-columns: 250px 1fr;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .left-sidebar {
+          display: none;
+        }
+
+        .right-sidebar {
+          display: none;
+        }
+
+        .ad-banner {
+          flex-direction: column;
+          text-align: center;
+          padding: 12px;
+        }
+
+        .ad-banner button {
+          margin-top: 8px;
+          width: 100%;
+        }
+
+        .resource-download .grid {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+
+        .daily-share .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .video-materials .grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 8px;
+        }
+
+        .video-materials a {
+          padding: 8px;
+        }
+
+        .video-materials .text-sm {
+          font-size: 0.875rem;
+        }
+
+        .video-materials .text-xs {
+          font-size: 0.75rem;
+        }
+
+        a,
+        button {
+          min-height: 44px;
+          min-width: 44px;
+        }
+
+        input,
+        select,
+        textarea {
+          font-size: 16px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .video-materials .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .header .text-2xl {
+          font-size: 1.25rem;
+        }
+
+        .header .text-sm {
+          font-size: 0.75rem;
+        }
+
+        .carousel-item {
+          padding: 12px;
+        }
+
+        .carousel-item h3 {
+          font-size: 1rem;
+        }
+
+        .carousel-item p {
+          font-size: 0.875rem;
+        }
+
+        .carousel-item button {
+          padding: 6px 12px;
+          font-size: 0.875rem;
+        }
+
+        .container {
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
+    </style>
+  </head>
+
+  <body class="dark-mode">
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="p-4 space-y-4">
         <!-- 用户信息卡片 -->
         <div class="gradient-card rounded-lg p-4 mb-4">
           <div class="flex items-center mb-3">
@@ -663,8 +563,14 @@
         <!-- 搜索框 -->
         <div class="gradient-card rounded-lg p-3 mb-4">
           <div class="relative">
-            <input type="text" placeholder="输入关键词..." class="search-input w-full py-2 px-4 rounded-lg" />
-            <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            <input
+              type="text"
+              placeholder="输入关键词..."
+              class="search-input w-full py-2 px-4 rounded-lg"
+            />
+            <button
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            >
               <i class="fas fa-search"></i>
             </button>
           </div>
@@ -676,34 +582,30 @@
             <i class="fas fa-bars mr-2 text-accent"></i>
             导航菜单
           </h3>
-          <div class="grid grid-cols-3 gap-2">
-            <a href="#"
-              class="flex items-center justify-center nav-link px-2 py-1 rounded hover:bg-blue-900/30 text-sm">
-              <i class="fas fa-home mr-1"></i>首页
+          <div class="space-y-2">
+            <a href="#" class="block nav-link p-2 rounded hover:bg-blue-900/30">
+              <i class="fas fa-home mr-2"></i>首页
             </a>
-            <a href="#"
-              class="flex items-center justify-center nav-link px-2 py-1 rounded hover:bg-blue-900/30 text-sm">
-              <i class="fas fa-download mr-1"></i>资源
+            <a href="#" class="block nav-link p-2 rounded hover:bg-blue-900/30">
+              <i class="fas fa-download mr-2"></i>资源
             </a>
-            <a href="#"
-              class="flex items-center justify-center nav-link px-2 py-1 rounded hover:bg-blue-900/30 text-sm">
-              <i class="fas fa-video mr-1"></i>短剧
+            <a href="#" class="block nav-link p-2 rounded hover:bg-blue-900/30">
+              <i class="fas fa-video mr-2"></i>短剧
             </a>
-            <a href="#"
-              class="flex items-center justify-center nav-link px-2 py-1 rounded hover:bg-blue-900/30 text-sm">
-              <i class="fas fa-music mr-1"></i>音乐
+            <a href="#" class="block nav-link p-2 rounded hover:bg-blue-900/30">
+              <i class="fas fa-music mr-2"></i>音乐
             </a>
-            <a href="#"
-              class="flex items-center justify-center nav-link px-2 py-1 rounded hover:bg-blue-900/30 text-sm">
-              <i class="fas fa-gamepad mr-1"></i>游戏
+            <a href="#" class="block nav-link p-2 rounded hover:bg-blue-900/30">
+              <i class="fas fa-gamepad mr-2"></i>游戏
             </a>
-            <a href="#"
-              class="flex items-center justify-center nav-link px-2 py-1 rounded hover:bg-blue-900/30 text-sm">
-              <i class="fas fa-star mr-1"></i>每日
+            <a href="#" class="block nav-link p-2 rounded hover:bg-blue-900/30">
+              <i class="fas fa-star mr-2"></i>每日
             </a>
-            <a href="#blog"
-              class="flex items-center justify-center nav-link px-2 py-1 rounded hover:bg-blue-900/30 text-sm">
-              <i class="fas fa-blog mr-1"></i>博客
+            <a
+              href="#blog"
+              class="block nav-link p-2 rounded hover:bg-blue-900/30"
+            >
+              <i class="fas fa-blog mr-2"></i>博客文章
             </a>
           </div>
         </div>
@@ -725,651 +627,972 @@
             </div>
           </div>
         </div>
+
+        <button
+          class="w-full btn-accent py-3 rounded-lg font-medium mt-4"
+          id="closeMobileMenu"
+        >
+          <i class="fas fa-times mr-2"></i>关闭菜单
+        </button>
       </div>
+    </div>
 
-      <!-- 中间内容区 -->
-      <div class="main-content col-span-12 md:col-span-6 space-y-4 md:space-y-6" id="blog">
-        <!-- 博客文章目录 -->
-        <div class="gradient-card rounded-lg p-4 md:p-6" id="blogList">
-          <h3 class="text-xl font-bold mb-6 flex items-center">
-            <i class="fas fa-blog text-accent mr-3"></i>
-            博客文章
-          </h3>
+    <!-- 顶部导航栏 -->
+    <header
+      class="py-4 px-4 md:px-6 shadow-lg sticky top-0 z-50 bg-opacity-90 backdrop-blur-sm"
+      style="background-color: var(--bg-primary)"
+    >
+      <div class="container mx-auto flex justify-between items-center">
+        <div class="flex items-center space-x-2 md:space-x-4">
+          <i class="fas fa-fire flame-icon text-xl md:text-2xl"></i>
+          <h1 class="text-xl md:text-2xl font-bold">
+            Torch <span class="text-xs md:text-sm opacity-80">资源分享</span>
+          </h1>
+        </div>
+        <div class="hidden md:flex items-center space-x-4 md:space-x-6">
+          <a href="#" class="nav-link">首页</a>
+          <a href="#" class="nav-link">资源库</a>
+          <a href="#blog" class="nav-link">博客文章</a>
+          <a href="#" class="nav-link">每日分享</a>
+          <a href="#" class="nav-link">关于</a>
+        </div>
+        <div class="flex items-center space-x-3">
+          <button id="themeToggle" class="md:flex items-center nav-link">
+            <i class="fas fa-moon theme-toggle-icon mr-1"></i>
+            <span></span>
+          </button>
+          <button
+            class="md:hidden text-xl"
+            id="mobileMenuButton"
+            aria-label="打开菜单"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </header>
 
-          <!-- 文章搜索和筛选 -->
-          <div class="mb-6">
-            <div class="flex flex-col md:flex-row gap-4">
-              <div class="relative flex-grow">
-                <input type="text" placeholder="搜索文章..." class="search-input w-full py-2 px-4 rounded-lg pr-10"
-                  id="blogSearch" />
-                <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                  <i class="fas fa-search"></i>
-                </button>
+    <!-- 主内容区 -->
+    <div class="container mx-auto px-2 md:px-4 py-4 md:py-6">
+      <div class="main-layout grid grid-cols-12 gap-4 md:gap-6">
+        <!-- 左侧边栏 (显示在桌面) -->
+        <div class="left-sidebar col-span-3 hidden md:block">
+          <!-- 用户信息卡片 -->
+          <div class="gradient-card rounded-lg p-4 mb-4">
+            <div class="flex items-center mb-3">
+              <div class="w-12 h-12 rounded-full bg-gray-600 mr-3"></div>
+              <div>
+                <div class="font-medium">游客用户</div>
+                <div class="text-xs text-gray-400">未登录</div>
               </div>
-              <select class="search-input py-2 px-4 rounded-lg">
-                <option>全部分类</option>
-                <option>技术教程</option>
-                <option>资源分享</option>
-                <option>使用心得</option>
-                <option>行业动态</option>
-              </select>
+            </div>
+            <button
+              class="w-full btn-accent py-2 rounded-lg text-sm font-medium"
+            >
+              <i class="fas fa-sign-in-alt mr-2"></i>登录/注册
+            </button>
+          </div>
+
+          <!-- 搜索框 -->
+          <div class="gradient-card rounded-lg p-3 mb-4">
+            <div class="relative">
+              <input
+                type="text"
+                placeholder="输入关键词..."
+                class="search-input w-full py-2 px-4 rounded-lg"
+              />
+              <button
+                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              >
+                <i class="fas fa-search"></i>
+              </button>
             </div>
           </div>
 
-          <!-- 文章列表 -->
-          <div class="space-y-6">
-            <!-- 文章卡片1 -->
-            <div class="article-card gradient-card rounded-lg p-4 md:p-6" data-article="article1">
-              <div class="flex items-center mb-2">
-                <span class="article-tag bg-blue-900/30 text-blue-400">技术教程</span>
-                <span class="article-tag bg-purple-900/30 text-purple-400">短剧</span>
-              </div>
-              <h4 class="text-lg md:text-xl font-bold mb-2">
-                <a href="#article1" class="hover:text-accent transition-colors">如何高效下载短剧资源：完整指南</a>
-              </h4>
-              <p class="text-sm text-gray-400 mb-3">
-                本文将详细介绍如何从Torch平台高效下载短剧资源，包括常见问题解答和优化技巧。
-              </p>
-              <div class="flex justify-between items-center">
-                <div class="flex items-center">
-                  <div class="w-6 h-6 rounded-full bg-gray-600 mr-2"></div>
-                  <span class="text-xs text-gray-400">作者: 资源达人</span>
-                </div>
-                <div class="text-xs text-gray-400">发布于: 2024/4/10</div>
-              </div>
+          <!-- 导航菜单 -->
+          <div class="gradient-card rounded-lg p-3 mb-4">
+            <h3 class="font-semibold mb-3 flex items-center">
+              <i class="fas fa-bars mr-2 text-accent"></i>
+              导航菜单
+            </h3>
+            <div class="grid grid-cols-3 gap-2">
+              <a
+                href="#"
+                class="flex items-center justify-center nav-link px-2 py-1 rounded hover:bg-blue-900/30 text-sm"
+              >
+                <i class="fas fa-home mr-1"></i>首页
+              </a>
+              <a
+                href="#"
+                class="flex items-center justify-center nav-link px-2 py-1 rounded hover:bg-blue-900/30 text-sm"
+              >
+                <i class="fas fa-download mr-1"></i>资源
+              </a>
+              <a
+                href="#"
+                class="flex items-center justify-center nav-link px-2 py-1 rounded hover:bg-blue-900/30 text-sm"
+              >
+                <i class="fas fa-video mr-1"></i>短剧
+              </a>
+              <a
+                href="#"
+                class="flex items-center justify-center nav-link px-2 py-1 rounded hover:bg-blue-900/30 text-sm"
+              >
+                <i class="fas fa-music mr-1"></i>音乐
+              </a>
+              <a
+                href="#"
+                class="flex items-center justify-center nav-link px-2 py-1 rounded hover:bg-blue-900/30 text-sm"
+              >
+                <i class="fas fa-gamepad mr-1"></i>游戏
+              </a>
+              <a
+                href="#"
+                class="flex items-center justify-center nav-link px-2 py-1 rounded hover:bg-blue-900/30 text-sm"
+              >
+                <i class="fas fa-star mr-1"></i>每日
+              </a>
+              <a
+                href="#blog"
+                class="flex items-center justify-center nav-link px-2 py-1 rounded hover:bg-blue-900/30 text-sm"
+              >
+                <i class="fas fa-blog mr-1"></i>博客
+              </a>
             </div>
+          </div>
 
-            <!-- 文章卡片2 -->
-            <div class="article-card gradient-card rounded-lg p-4 md:p-6" data-article="article2">
-              <div class="flex items-center mb-2">
-                <span class="article-tag bg-green-900/30 text-green-400">资源分享</span>
+          <!-- 公告栏 -->
+          <div class="gradient-card rounded-lg p-3">
+            <h3 class="font-semibold mb-3 flex items-center">
+              <i class="fas fa-bullhorn mr-2 text-accent"></i>
+              公告栏
+            </h3>
+            <div class="text-xs space-y-2">
+              <div class="p-2 bg-blue-900/20 rounded">
+                <div class="font-medium">系统维护通知</div>
+                <div class="text-gray-400">4月15日 00:00-02:00</div>
               </div>
-              <h4 class="text-lg md:text-xl font-bold mb-2">
-                <a href="#article2" class="hover:text-accent transition-colors">2024年最新短剧资源合集</a>
-              </h4>
-              <p class="text-sm text-gray-300 mb-3">
-                整理2024年最热门的短剧资源，包括都市、古装、悬疑等多种类型，持续更新中。
-              </p>
-              <div class="flex justify-between items-center">
-                <div class="flex items-center">
-                  <div class="w-6 h-6 rounded-full bg-gray-600 mr-2"></div>
-                  <span class="text-xs text-gray-400">作者: 短剧爱好者</span>
-                </div>
-                <div class="text-xs text-gray-400">发布于: 2024/4/8</div>
+              <div class="p-2 bg-blue-900/20 rounded">
+                <div class="font-medium">资源更新公告</div>
+                <div class="text-gray-400">新增100+短剧资源</div>
               </div>
-            </div>
-
-            <!-- 文章卡片3 -->
-            <div class="article-card gradient-card rounded-lg p-4 md:p-6" data-article="article3">
-              <div class="flex items-center mb-2">
-                <span class="article-tag bg-yellow-900/30 text-yellow-400">使用心得</span>
-                <span class="article-tag bg-red-900/30 text-red-400">技巧</span>
-              </div>
-              <h4 class="text-lg md:text-xl font-bold mb-2">
-                <a href="#article3" class="hover:text-accent transition-colors">Torch平台高级使用技巧</a>
-              </h4>
-              <p class="text-sm text-gray-300 mb-3">
-                分享一些Torch平台的隐藏功能和高级使用技巧，帮助你更高效地获取资源。
-              </p>
-              <div class="flex justify-between items-center">
-                <div class="flex items-center">
-                  <div class="w-6 h-6 rounded-full bg-gray-600 mr-2"></div>
-                  <span class="text-xs text-gray-400">作者: 资深用户</span>
-                </div>
-                <div class="text-xs text-gray-400">发布于: 2024/4/5</div>
-              </div>
-            </div>
-
-            <!-- 分页导航 -->
-            <div class="flex justify-center mt-6">
-              <nav class="flex items-center space-x-2">
-                <button class="px-3 py-1 rounded bg-blue-900/30 text-sm">
-                  上一页
-                </button>
-                <button class="px-3 py-1 rounded bg-accent text-white text-sm">
-                  1
-                </button>
-                <button class="px-3 py-1 rounded bg-blue-900/30 hover:bg-blue-900/50 text-sm">
-                  2
-                </button>
-                <button class="px-3 py-1 rounded bg-blue-900/30 hover:bg-blue-900/50 text-sm">
-                  3
-                </button>
-                <span class="px-2 text-sm">...</span>
-                <button class="px-3 py-1 rounded bg-blue-900/30 hover:bg-blue-900/50 text-sm">
-                  8
-                </button>
-                <button class="px-3 py-1 rounded bg-blue-900/30 text-sm">
-                  下一页
-                </button>
-              </nav>
             </div>
           </div>
         </div>
 
-        <!-- 文章详情 (默认隐藏) -->
-        <div id="articleDetail" class="hidden">
-          <!-- 返回按钮 -->
-          <button id="backToBlog" class="mb-4 flex items-center text-accent hover:text-accent-hover">
-            <i class="fas fa-arrow-left mr-2"></i>返回文章列表
-          </button>
+        <!-- 中间内容区 -->
+        <div
+          class="main-content col-span-12 md:col-span-6 space-y-4 md:space-y-6"
+          id="blog"
+        >
+          <!-- 博客文章目录 -->
+          <div class="gradient-card rounded-lg p-4 md:p-6" id="blogList">
+            <h3 class="text-xl font-bold mb-6 flex items-center">
+              <i class="fas fa-blog text-accent mr-3"></i>
+              博客文章
+            </h3>
 
-          <!-- 文章内容 -->
-          <div class="gradient-card rounded-lg p-4 md:p-6">
-            <div class="flex items-center mb-4">
-              <span class="article-tag bg-blue-900/30 text-blue-400">技术教程</span>
-              <span class="article-tag bg-purple-900/30 text-purple-400">短剧</span>
-            </div>
-            <h2 class="text-2xl font-bold mb-4">
-              如何高效下载短剧资源：完整指南
-            </h2>
-
-            <div class="flex items-center mb-6">
-              <div class="w-8 h-8 rounded-full bg-gray-600 mr-3"></div>
-              <div>
-                <div class="font-medium">资源达人</div>
-                <div class="text-xs text-gray-400">
-                  发布于: 2024/4/10 | 阅读: 1,245
+            <!-- 文章搜索和筛选 -->
+            <div class="mb-6">
+              <div class="flex flex-col md:flex-row gap-4">
+                <div class="relative flex-grow">
+                  <input
+                    type="text"
+                    placeholder="搜索文章..."
+                    class="search-input w-full py-2 px-4 rounded-lg pr-10"
+                    id="blogSearch"
+                  />
+                  <button
+                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  >
+                    <i class="fas fa-search"></i>
+                  </button>
                 </div>
+                <select class="search-input py-2 px-4 rounded-lg">
+                  <option>全部分类</option>
+                  <option>技术教程</option>
+                  <option>资源分享</option>
+                  <option>使用心得</option>
+                  <option>行业动态</option>
+                </select>
               </div>
             </div>
 
-            <div class="article-content mb-6">
-              <p class="mb-4">
-                在当今快节奏的生活中，短剧因其紧凑的剧情和快速的节奏越来越受到观众的喜爱。Torch平台提供了丰富的短剧资源，本文将详细介绍如何高效下载这些资源。
-              </p>
+            <!-- 文章列表 -->
+            <div class="space-y-6">
+              <!-- 文章卡片1 -->
+              <div
+                class="article-card gradient-card rounded-lg p-4 md:p-6"
+                data-article="article1"
+              >
+                <div class="flex items-center mb-2">
+                  <span class="article-tag bg-blue-900/30 text-blue-400"
+                    >技术教程</span
+                  >
+                  <span class="article-tag bg-purple-900/30 text-purple-400"
+                    >短剧</span
+                  >
+                </div>
+                <h4 class="text-lg md:text-xl font-bold mb-2">
+                  <a
+                    href="#article1"
+                    class="hover:text-accent transition-colors"
+                    >如何高效下载短剧资源：完整指南</a
+                  >
+                </h4>
+                <p class="text-sm text-gray-400 mb-3">
+                  本文将详细介绍如何从Torch平台高效下载短剧资源，包括常见问题解答和优化技巧。
+                </p>
+                <div class="flex justify-between items-center">
+                  <div class="flex items-center">
+                    <div class="w-6 h-6 rounded-full bg-gray-600 mr-2"></div>
+                    <span class="text-xs text-gray-400">作者: 资源达人</span>
+                  </div>
+                  <div class="text-xs text-gray-400">发布于: 2024/4/10</div>
+                </div>
+              </div>
 
-              <h3>1. 选择合适的下载方式</h3>
-              <p class="mb-4">
-                Torch平台提供多种下载方式，根据您的网络环境和设备选择最适合的方式：
-              </p>
+              <!-- 文章卡片2 -->
+              <div
+                class="article-card gradient-card rounded-lg p-4 md:p-6"
+                data-article="article2"
+              >
+                <div class="flex items-center mb-2">
+                  <span class="article-tag bg-green-900/30 text-green-400"
+                    >资源分享</span
+                  >
+                </div>
+                <h4 class="text-lg md:text-xl font-bold mb-2">
+                  <a
+                    href="#article2"
+                    class="hover:text-accent transition-colors"
+                    >2024年最新短剧资源合集</a
+                  >
+                </h4>
+                <p class="text-sm text-gray-300 mb-3">
+                  整理2024年最热门的短剧资源，包括都市、古装、悬疑等多种类型，持续更新中。
+                </p>
+                <div class="flex justify-between items-center">
+                  <div class="flex items-center">
+                    <div class="w-6 h-6 rounded-full bg-gray-600 mr-2"></div>
+                    <span class="text-xs text-gray-400">作者: 短剧爱好者</span>
+                  </div>
+                  <div class="text-xs text-gray-400">发布于: 2024/4/8</div>
+                </div>
+              </div>
 
-              <ul class="list-disc pl-6 mb-4 space-y-2">
-                <li><strong>直接下载</strong>：适用于小文件，点击即可下载</li>
-                <li>
-                  <strong>云盘下载</strong>：大文件推荐使用百度云、阿里云等
-                </li>
-                <li><strong>种子下载</strong>：适合使用BT客户端的用户</li>
-              </ul>
+              <!-- 文章卡片3 -->
+              <div
+                class="article-card gradient-card rounded-lg p-4 md:p-6"
+                data-article="article3"
+              >
+                <div class="flex items-center mb-2">
+                  <span class="article-tag bg-yellow-900/30 text-yellow-400"
+                    >使用心得</span
+                  >
+                  <span class="article-tag bg-red-900/30 text-red-400"
+                    >技巧</span
+                  >
+                </div>
+                <h4 class="text-lg md:text-xl font-bold mb-2">
+                  <a
+                    href="#article3"
+                    class="hover:text-accent transition-colors"
+                    >Torch平台高级使用技巧</a
+                  >
+                </h4>
+                <p class="text-sm text-gray-300 mb-3">
+                  分享一些Torch平台的隐藏功能和高级使用技巧，帮助你更高效地获取资源。
+                </p>
+                <div class="flex justify-between items-center">
+                  <div class="flex items-center">
+                    <div class="w-6 h-6 rounded-full bg-gray-600 mr-2"></div>
+                    <span class="text-xs text-gray-400">作者: 资深用户</span>
+                  </div>
+                  <div class="text-xs text-gray-400">发布于: 2024/4/5</div>
+                </div>
+              </div>
 
-              <h3>2. 下载前的准备工作</h3>
-              <p class="mb-4">为了确保下载过程顺利，请做好以下准备：</p>
+              <!-- 分页导航 -->
+              <div class="flex justify-center mt-6">
+                <nav class="flex items-center space-x-2">
+                  <button class="px-3 py-1 rounded bg-blue-900/30 text-sm">
+                    上一页
+                  </button>
+                  <button
+                    class="px-3 py-1 rounded bg-accent text-white text-sm"
+                  >
+                    1
+                  </button>
+                  <button
+                    class="px-3 py-1 rounded bg-blue-900/30 hover:bg-blue-900/50 text-sm"
+                  >
+                    2
+                  </button>
+                  <button
+                    class="px-3 py-1 rounded bg-blue-900/30 hover:bg-blue-900/50 text-sm"
+                  >
+                    3
+                  </button>
+                  <span class="px-2 text-sm">...</span>
+                  <button
+                    class="px-3 py-1 rounded bg-blue-900/30 hover:bg-blue-900/50 text-sm"
+                  >
+                    8
+                  </button>
+                  <button class="px-3 py-1 rounded bg-blue-900/30 text-sm">
+                    下一页
+                  </button>
+                </nav>
+              </div>
+            </div>
+          </div>
 
-              <div class="bg-blue-900/20 p-4 rounded-lg mb-4">
-                <h4 class="font-bold mb-2">注意事项</h4>
-                <ul class="list-disc pl-6 space-y-1">
-                  <li>确保设备有足够的存储空间</li>
-                  <li>检查网络连接稳定性</li>
-                  <li>安装必要的解压软件(如WinRAR、7-Zip)</li>
-                  <li>关闭可能干扰下载的安全软件</li>
+          <!-- 文章详情 (默认隐藏) -->
+          <div id="articleDetail" class="hidden">
+            <!-- 返回按钮 -->
+            <button
+              id="backToBlog"
+              class="mb-4 flex items-center text-accent hover:text-accent-hover"
+            >
+              <i class="fas fa-arrow-left mr-2"></i>返回文章列表
+            </button>
+
+            <!-- 文章内容 -->
+            <div class="gradient-card rounded-lg p-4 md:p-6">
+              <div class="flex items-center mb-4">
+                <span class="article-tag bg-blue-900/30 text-blue-400"
+                  >技术教程</span
+                >
+                <span class="article-tag bg-purple-900/30 text-purple-400"
+                  >短剧</span
+                >
+              </div>
+              <h2 class="text-2xl font-bold mb-4">
+                如何高效下载短剧资源：完整指南
+              </h2>
+
+              <div class="flex items-center mb-6">
+                <div class="w-8 h-8 rounded-full bg-gray-600 mr-3"></div>
+                <div>
+                  <div class="font-medium">资源达人</div>
+                  <div class="text-xs text-gray-400">
+                    发布于: 2024/4/10 | 阅读: 1,245
+                  </div>
+                </div>
+              </div>
+
+              <div class="article-content mb-6">
+                <p class="mb-4">
+                  在当今快节奏的生活中，短剧因其紧凑的剧情和快速的节奏越来越受到观众的喜爱。Torch平台提供了丰富的短剧资源，本文将详细介绍如何高效下载这些资源。
+                </p>
+
+                <h3>1. 选择合适的下载方式</h3>
+                <p class="mb-4">
+                  Torch平台提供多种下载方式，根据您的网络环境和设备选择最适合的方式：
+                </p>
+
+                <ul class="list-disc pl-6 mb-4 space-y-2">
+                  <li><strong>直接下载</strong>：适用于小文件，点击即可下载</li>
+                  <li>
+                    <strong>云盘下载</strong>：大文件推荐使用百度云、阿里云等
+                  </li>
+                  <li><strong>种子下载</strong>：适合使用BT客户端的用户</li>
                 </ul>
-              </div>
 
-              <h3>3. 常见问题解答</h3>
-              <p class="mb-4">以下是用户经常遇到的问题及解决方案：</p>
+                <h3>2. 下载前的准备工作</h3>
+                <p class="mb-4">为了确保下载过程顺利，请做好以下准备：</p>
 
-              <div class="space-y-4 mb-4">
-                <div>
-                  <h4 class="font-bold">Q: 下载速度慢怎么办？</h4>
-                  <p>A: 尝试更换下载时间段，或使用下载加速工具。</p>
+                <div class="bg-blue-900/20 p-4 rounded-lg mb-4">
+                  <h4 class="font-bold mb-2">注意事项</h4>
+                  <ul class="list-disc pl-6 space-y-1">
+                    <li>确保设备有足够的存储空间</li>
+                    <li>检查网络连接稳定性</li>
+                    <li>安装必要的解压软件(如WinRAR、7-Zip)</li>
+                    <li>关闭可能干扰下载的安全软件</li>
+                  </ul>
                 </div>
-                <div>
-                  <h4 class="font-bold">Q: 文件解压失败怎么办？</h4>
-                  <p>
-                    A: 可能是下载过程中文件损坏，请重新下载或使用修复功能。
-                  </p>
+
+                <h3>3. 常见问题解答</h3>
+                <p class="mb-4">以下是用户经常遇到的问题及解决方案：</p>
+
+                <div class="space-y-4 mb-4">
+                  <div>
+                    <h4 class="font-bold">Q: 下载速度慢怎么办？</h4>
+                    <p>A: 尝试更换下载时间段，或使用下载加速工具。</p>
+                  </div>
+                  <div>
+                    <h4 class="font-bold">Q: 文件解压失败怎么办？</h4>
+                    <p>
+                      A: 可能是下载过程中文件损坏，请重新下载或使用修复功能。
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <h3>4. 高级技巧</h3>
-              <p class="mb-4">对于高级用户，可以尝试以下技巧提升下载效率：</p>
+                <h3>4. 高级技巧</h3>
+                <p class="mb-4">对于高级用户，可以尝试以下技巧提升下载效率：</p>
 
-              <pre class="bg-gray-800 p-4 rounded mb-4 overflow-x-auto"><code># 使用命令行工具批量下载
+                <pre
+                  class="bg-gray-800 p-4 rounded mb-4 overflow-x-auto"
+                ><code># 使用命令行工具批量下载
 wget -i download_list.txt
 # 设置并发连接数
 aria2c -x16 -s16 http://example.com/file.zip</code></pre>
 
-              <blockquote class="mb-4">
-                提示：使用多线程下载工具可以显著提高下载速度，但请注意不要设置过高的线程数，以免被服务器限制。
-              </blockquote>
-            </div>
-
-            <!-- 文章页脚 -->
-            <div class="flex justify-between items-center pt-4 border-t border-gray-700">
-              <div class="flex space-x-4">
-                <button class="flex items-center text-gray-400 hover:text-accent">
-                  <i class="far fa-thumbs-up mr-1"></i> 赞 (124)
-                </button>
-                <button class="flex items-center text-gray-400 hover:text-accent">
-                  <i class="far fa-star mr-1"></i> 收藏
-                </button>
-              </div>
-              <div class="text-xs text-gray-400">最后更新: 2024/4/11</div>
-            </div>
-
-            <!-- 相关文章 -->
-            <div class="mt-8 pt-6 border-t border-gray-700">
-              <h4 class="font-bold mb-4">相关文章</h4>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <a href="#" class="flex items-center p-2 rounded hover:bg-blue-900/30">
-                  <div class="w-16 h-16 bg-gray-700 rounded mr-3"></div>
-                  <div>
-                    <div class="font-medium text-sm">短剧资源命名规范</div>
-                    <div class="text-xs text-gray-400 mt-1">2024/4/5</div>
-                  </div>
-                </a>
-                <a href="#" class="flex items-center p-2 rounded hover:bg-blue-900/30">
-                  <div class="w-16 h-16 bg-gray-700 rounded mr-3"></div>
-                  <div>
-                    <div class="font-medium text-sm">如何识别高质量短剧</div>
-                    <div class="text-xs text-gray-400 mt-1">2024/4/3</div>
-                  </div>
-                </a>
-              </div>
-            </div>
-
-            <!-- 评论区域 -->
-            <div class="mt-8 pt-6 border-t border-gray-700">
-              <h4 class="font-bold mb-4">评论 (3)</h4>
-
-              <div class="space-y-4 mb-6">
-                <!-- 评论1 -->
-                <div class="comment-item">
-                  <div class="flex mb-2">
-                    <div class="comment-avatar mr-3">
-                      <i class="fas fa-user text-gray-400"></i>
-                    </div>
-                    <div>
-                      <div class="font-medium">短剧爱好者</div>
-                      <div class="text-xs text-gray-400">2024/4/11 14:30</div>
-                    </div>
-                  </div>
-                  <p class="text-sm">
-                    非常实用的教程，解决了我的下载速度问题！
-                  </p>
-                </div>
-
-                <!-- 评论2 -->
-                <div class="comment-item">
-                  <div class="flex mb-2">
-                    <div class="comment-avatar mr-3">
-                      <i class="fas fa-user text-gray-400"></i>
-                    </div>
-                    <div>
-                      <div class="font-medium">新手用户</div>
-                      <div class="text-xs text-gray-400">2024/4/10 20:15</div>
-                    </div>
-                  </div>
-                  <p class="text-sm">请问解压密码在哪里找？文章里没看到。</p>
-                </div>
+                <blockquote class="mb-4">
+                  提示：使用多线程下载工具可以显著提高下载速度，但请注意不要设置过高的线程数，以免被服务器限制。
+                </blockquote>
               </div>
 
-              <!-- 评论表单 -->
-              <div class="gradient-card rounded-lg p-4">
-                <h5 class="font-medium mb-3">发表评论</h5>
-                <textarea class="search-input w-full p-3 rounded-lg mb-3" rows="3" placeholder="写下您的评论..."></textarea>
-                <div class="flex justify-between items-center">
-                  <div class="text-xs text-gray-400">登录后即可评论</div>
-                  <button class="btn-accent px-4 py-2 rounded text-sm">
-                    提交评论
+              <!-- 文章页脚 -->
+              <div
+                class="flex justify-between items-center pt-4 border-t border-gray-700"
+              >
+                <div class="flex space-x-4">
+                  <button
+                    class="flex items-center text-gray-400 hover:text-accent"
+                  >
+                    <i class="far fa-thumbs-up mr-1"></i> 赞 (124)
+                  </button>
+                  <button
+                    class="flex items-center text-gray-400 hover:text-accent"
+                  >
+                    <i class="far fa-star mr-1"></i> 收藏
                   </button>
                 </div>
+                <div class="text-xs text-gray-400">最后更新: 2024/4/11</div>
+              </div>
+
+              <!-- 相关文章 -->
+              <div class="mt-8 pt-6 border-t border-gray-700">
+                <h4 class="font-bold mb-4">相关文章</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <a
+                    href="#"
+                    class="flex items-center p-2 rounded hover:bg-blue-900/30"
+                  >
+                    <div class="w-16 h-16 bg-gray-700 rounded mr-3"></div>
+                    <div>
+                      <div class="font-medium text-sm">短剧资源命名规范</div>
+                      <div class="text-xs text-gray-400 mt-1">2024/4/5</div>
+                    </div>
+                  </a>
+                  <a
+                    href="#"
+                    class="flex items-center p-2 rounded hover:bg-blue-900/30"
+                  >
+                    <div class="w-16 h-16 bg-gray-700 rounded mr-3"></div>
+                    <div>
+                      <div class="font-medium text-sm">如何识别高质量短剧</div>
+                      <div class="text-xs text-gray-400 mt-1">2024/4/3</div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+
+              <!-- 评论区域 -->
+              <div class="mt-8 pt-6 border-t border-gray-700">
+                <h4 class="font-bold mb-4">评论 (3)</h4>
+
+                <div class="space-y-4 mb-6">
+                  <!-- 评论1 -->
+                  <div class="comment-item">
+                    <div class="flex mb-2">
+                      <div class="comment-avatar mr-3">
+                        <i class="fas fa-user text-gray-400"></i>
+                      </div>
+                      <div>
+                        <div class="font-medium">短剧爱好者</div>
+                        <div class="text-xs text-gray-400">2024/4/11 14:30</div>
+                      </div>
+                    </div>
+                    <p class="text-sm">
+                      非常实用的教程，解决了我的下载速度问题！
+                    </p>
+                  </div>
+
+                  <!-- 评论2 -->
+                  <div class="comment-item">
+                    <div class="flex mb-2">
+                      <div class="comment-avatar mr-3">
+                        <i class="fas fa-user text-gray-400"></i>
+                      </div>
+                      <div>
+                        <div class="font-medium">新手用户</div>
+                        <div class="text-xs text-gray-400">2024/4/10 20:15</div>
+                      </div>
+                    </div>
+                    <p class="text-sm">请问解压密码在哪里找？文章里没看到。</p>
+                  </div>
+                </div>
+
+                <!-- 评论表单 -->
+                <div class="gradient-card rounded-lg p-4">
+                  <h5 class="font-medium mb-3">发表评论</h5>
+                  <textarea
+                    class="search-input w-full p-3 rounded-lg mb-3"
+                    rows="3"
+                    placeholder="写下您的评论..."
+                  ></textarea>
+                  <div class="flex justify-between items-center">
+                    <div class="text-xs text-gray-400">登录后即可评论</div>
+                    <button class="btn-accent px-4 py-2 rounded text-sm">
+                      提交评论
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- 右侧边栏 (显示在桌面) -->
-      <div class="right-sidebar col-span-3 space-y-4 md:space-y-6">
-        <!-- 热门文章 -->
-        <div class="gradient-card rounded-lg p-4">
-          <h3 class="font-semibold mb-4 flex items-center">
-            <i class="fas fa-fire text-accent mr-2"></i>
-            热门文章
-          </h3>
-          <div class="space-y-3">
-            <a href="#" class="block group">
-              <div class="text-sm font-medium group-hover:text-accent transition-colors">
-                如何识别高质量短剧资源
-              </div>
-              <div class="text-xs text-gray-400 mt-1">阅读 2,345</div>
-            </a>
-            <a href="#" class="block group">
-              <div class="text-sm font-medium group-hover:text-accent transition-colors">
-                2024年短剧行业趋势分析
-              </div>
-              <div class="text-xs text-gray-400 mt-1">阅读 1,876</div>
-            </a>
-            <a href="#" class="block group">
-              <div class="text-sm font-medium group-hover:text-accent transition-colors">
-                短剧剪辑技巧大全
-              </div>
-              <div class="text-xs text-gray-400 mt-1">阅读 1,532</div>
-            </a>
-            <a href="#" class="block group">
-              <div class="text-sm font-medium group-hover:text-accent transition-colors">
-                Torch平台使用FAQ
-              </div>
-              <div class="text-xs text-gray-400 mt-1">阅读 1,245</div>
-            </a>
-          </div>
-        </div>
-
-        <!-- 文章分类 -->
-        <div class="gradient-card rounded-lg p-4">
-          <h3 class="font-semibold mb-4 flex items-center">
-            <i class="fas fa-tags text-accent mr-2"></i>
-            文章分类
-          </h3>
-          <div class="space-y-2">
-            <a href="#" class="flex justify-between items-center py-1 group">
-              <span class="group-hover:text-accent transition-colors">技术教程</span>
-              <span class="text-xs bg-blue-900/30 text-blue-400 px-2 py-1 rounded-full">24</span>
-            </a>
-            <a href="#" class="flex justify-between items-center py-1 group">
-              <span class="group-hover:text-accent transition-colors">资源分享</span>
-              <span class="text-xs bg-purple-900/30 text-purple-400 px-2 py-1 rounded-full">18</span>
-            </a>
-            <a href="#" class="flex justify-between items-center py-1 group">
-              <span class="group-hover:text-accent transition-colors">使用心得</span>
-              <span class="text-xs bg-green-900/30 text-green-400 px-2 py-1 rounded-full">12</span>
-            </a>
-            <a href="#" class="flex justify-between items-center py-1 group">
-              <span class="group-hover:text-accent transition-colors">行业动态</span>
-              <span class="text-xs bg-yellow-900/30 text-yellow-400 px-2 py-1 rounded-full">8</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- 微博板块 -->
-        <div class="gradient-card rounded-lg overflow-hidden">
-          <div class="bg-blue-600 text-white p-3 flex items-center">
-            <i class="fab fa-weibo text-xl mr-2"></i>
-            <h3 class="font-semibold">微博热点</h3>
-          </div>
-          <div class="p-3 md:p-4">
-            <div class="mb-3 md:mb-4 pb-3 md:pb-4 border-b border-gray-700">
-              <div class="flex items-start mb-1 md:mb-2">
-                <div class="w-8 md:w-10 h-8 md:h-10 rounded-full bg-gray-600 mr-2 md:mr-3"></div>
-                <div>
-                  <div class="font-medium text-sm md:text-base">腾讯官方</div>
-                  <div class="text-2xs md:text-xs text-gray-400">2小时前</div>
+        <!-- 右侧边栏 (显示在桌面) -->
+        <div class="right-sidebar col-span-3 space-y-4 md:space-y-6">
+          <!-- 热门文章 -->
+          <div class="gradient-card rounded-lg p-4">
+            <h3 class="font-semibold mb-4 flex items-center">
+              <i class="fas fa-fire text-accent mr-2"></i>
+              热门文章
+            </h3>
+            <div class="space-y-3">
+              <a href="#" class="block group">
+                <div
+                  class="text-sm font-medium group-hover:text-accent transition-colors"
+                >
+                  如何识别高质量短剧资源
                 </div>
-              </div>
-              <p class="text-xs md:text-sm mt-1 md:mt-2">
-                腾讯大流量卡限时优惠，每月100G流量仅需29元！
-              </p>
-              <a href="#" class="text-accent text-xs md:text-sm mt-1 md:mt-2 inline-block text-blue-400">点击申请>
+                <div class="text-xs text-gray-400 mt-1">阅读 2,345</div>
+              </a>
+              <a href="#" class="block group">
+                <div
+                  class="text-sm font-medium group-hover:text-accent transition-colors"
+                >
+                  2024年短剧行业趋势分析
+                </div>
+                <div class="text-xs text-gray-400 mt-1">阅读 1,876</div>
+              </a>
+              <a href="#" class="block group">
+                <div
+                  class="text-sm font-medium group-hover:text-accent transition-colors"
+                >
+                  短剧剪辑技巧大全
+                </div>
+                <div class="text-xs text-gray-400 mt-1">阅读 1,532</div>
+              </a>
+              <a href="#" class="block group">
+                <div
+                  class="text-sm font-medium group-hover:text-accent transition-colors"
+                >
+                  Torch平台使用FAQ
+                </div>
+                <div class="text-xs text-gray-400 mt-1">阅读 1,245</div>
               </a>
             </div>
-            <div class="mb-3 md:mb-4">
-              <div class="flex items-start mb-1 md:mb-2">
-                <div class="w-8 md:w-10 h-8 md:h-10 rounded-full bg-gray-600 mr-2 md:mr-3"></div>
-                <div>
-                  <div class="font-medium text-sm md:text-base">福利社</div>
-                  <div class="text-2xs md:text-xs text-gray-400">5小时前</div>
-                </div>
-              </div>
-              <p class="text-xs md:text-sm mt-1 md:mt-2">
-                今日福利：免费领取视频会员月卡，数量有限先到先得！
-              </p>
-              <a href="#" class="text-accent text-xs md:text-sm mt-1 md:mt-2 inline-block text-blue-400">立即领取>
+          </div>
+
+          <!-- 文章分类 -->
+          <div class="gradient-card rounded-lg p-4">
+            <h3 class="font-semibold mb-4 flex items-center">
+              <i class="fas fa-tags text-accent mr-2"></i>
+              文章分类
+            </h3>
+            <div class="space-y-2">
+              <a href="#" class="flex justify-between items-center py-1 group">
+                <span class="group-hover:text-accent transition-colors"
+                  >技术教程</span
+                >
+                <span
+                  class="text-xs bg-blue-900/30 text-blue-400 px-2 py-1 rounded-full"
+                  >24</span
+                >
+              </a>
+              <a href="#" class="flex justify-between items-center py-1 group">
+                <span class="group-hover:text-accent transition-colors"
+                  >资源分享</span
+                >
+                <span
+                  class="text-xs bg-purple-900/30 text-purple-400 px-2 py-1 rounded-full"
+                  >18</span
+                >
+              </a>
+              <a href="#" class="flex justify-between items-center py-1 group">
+                <span class="group-hover:text-accent transition-colors"
+                  >使用心得</span
+                >
+                <span
+                  class="text-xs bg-green-900/30 text-green-400 px-2 py-1 rounded-full"
+                  >12</span
+                >
+              </a>
+              <a href="#" class="flex justify-between items-center py-1 group">
+                <span class="group-hover:text-accent transition-colors"
+                  >行业动态</span
+                >
+                <span
+                  class="text-xs bg-yellow-900/30 text-yellow-400 px-2 py-1 rounded-full"
+                  >8</span
+                >
               </a>
             </div>
           </div>
-        </div>
 
-        <!-- 近期动态 -->
-        <div class="gradient-card rounded-lg p-3 md:p-4">
-          <h3 class="text-base md:text-lg font-semibold mb-3 md:mb-4 flex items-center">
-            <i class="fas fa-history text-accent mr-2"></i>
-            近期动态
-          </h3>
-          <div class="space-y-3 md:space-y-4">
-            <div class="flex items-start">
-              <div
-                class="text-2xs md:text-xs bg-accent text-white rounded-full w-5 md:w-6 h-5 md:h-6 flex items-center justify-center mr-2 md:mr-3 mt-0.5 md:mt-1">
-                新
-              </div>
-              <div>
-                <div class="text-xs md:text-sm font-medium">资源更新通知</div>
-                <div class="text-2xs md:text-xs text-gray-400 mt-0.5 md:mt-1">
-                  2024/4/13 10:30
-                </div>
-                <p class="text-2xs md:text-xs mt-0.5 md:mt-1">
-                  短剧库新增50部热门短剧，点击查看...
-                </p>
-              </div>
+          <!-- 微博板块 -->
+          <div class="gradient-card rounded-lg overflow-hidden">
+            <div class="bg-blue-600 text-white p-3 flex items-center">
+              <i class="fab fa-weibo text-xl mr-2"></i>
+              <h3 class="font-semibold">微博热点</h3>
             </div>
-            <div class="flex items-start">
-              <div
-                class="text-2xs md:text-xs bg-purple-500 text-white rounded-full w-5 md:w-6 h-5 md:h-6 flex items-center justify-center mr-2 md:mr-3 mt-0.5 md:mt-1">
-                热
-              </div>
-              <div>
-                <div class="text-xs md:text-sm font-medium">系统维护公告</div>
-                <div class="text-2xs md:text-xs text-gray-400 mt-0.5 md:mt-1">
-                  2024/4/12 22:00
+            <div class="p-3 md:p-4">
+              <div class="mb-3 md:mb-4 pb-3 md:pb-4 border-b border-gray-700">
+                <div class="flex items-start mb-1 md:mb-2">
+                  <div
+                    class="w-8 md:w-10 h-8 md:h-10 rounded-full bg-gray-600 mr-2 md:mr-3"
+                  ></div>
+                  <div>
+                    <div class="font-medium text-sm md:text-base">腾讯官方</div>
+                    <div class="text-2xs md:text-xs text-gray-400">2小时前</div>
+                  </div>
                 </div>
-                <p class="text-2xs md:text-xs mt-0.5 md:mt-1">
-                  今晚23:00-01:00系统升级维护...
+                <p class="text-xs md:text-sm mt-1 md:mt-2">
+                  腾讯大流量卡限时优惠，每月100G流量仅需29元！
                 </p>
+                <a
+                  href="#"
+                  class="text-accent text-xs md:text-sm mt-1 md:mt-2 inline-block text-blue-400"
+                  >点击申请>
+                </a>
               </div>
-            </div>
-            <div class="flex items-start">
-              <div
-                class="text-2xs md:text-xs bg-green-500 text-white rounded-full w-5 md:w-6 h-5 md:h-6 flex items-center justify-center mr-2 md:mr-3 mt-0.5 md:mt-1">
-                活
-              </div>
-              <div>
-                <div class="text-xs md:text-sm font-medium">活动预告</div>
-                <div class="text-2xs md:text-xs text-gray-400 mt-0.5 md:mt-1">
-                  2024/4/12 15:45
+              <div class="mb-3 md:mb-4">
+                <div class="flex items-start mb-1 md:mb-2">
+                  <div
+                    class="w-8 md:w-10 h-8 md:h-10 rounded-full bg-gray-600 mr-2 md:mr-3"
+                  ></div>
+                  <div>
+                    <div class="font-medium text-sm md:text-base">福利社</div>
+                    <div class="text-2xs md:text-xs text-gray-400">5小时前</div>
+                  </div>
                 </div>
-                <p class="text-2xs md:text-xs mt-0.5 md:mt-1">
-                  明日将开启限时免费下载活动...
+                <p class="text-xs md:text-sm mt-1 md:mt-2">
+                  今日福利：免费领取视频会员月卡，数量有限先到先得！
                 </p>
+                <a
+                  href="#"
+                  class="text-accent text-xs md:text-sm mt-1 md:mt-2 inline-block text-blue-400"
+                  >立即领取>
+                </a>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- 二维码模块 -->
-        <div class="gradient-card rounded-lg p-3 md:p-4">
-          <h3 class="text-base md:text-lg font-semibold mb-3 md:mb-4 flex items-center">
-            <i class="fas fa-mobile-alt text-accent mr-2"></i>
-            手机访问
-          </h3>
-          <div class="flex flex-col items-center">
-            <div class="qr-code mb-2 md:mb-3">
-              <div class="w-24 md:w-32 h-24 md:h-32 bg-gray-200 flex items-center justify-center">
-                <span class="text-2xs md:text-xs text-gray-600">扫码查看</span>
+          <!-- 近期动态 -->
+          <div class="gradient-card rounded-lg p-3 md:p-4">
+            <h3
+              class="text-base md:text-lg font-semibold mb-3 md:mb-4 flex items-center"
+            >
+              <i class="fas fa-history text-accent mr-2"></i>
+              近期动态
+            </h3>
+            <div class="space-y-3 md:space-y-4">
+              <div class="flex items-start">
+                <div
+                  class="text-2xs md:text-xs bg-accent text-white rounded-full w-5 md:w-6 h-5 md:h-6 flex items-center justify-center mr-2 md:mr-3 mt-0.5 md:mt-1"
+                >
+                  新
+                </div>
+                <div>
+                  <div class="text-xs md:text-sm font-medium">资源更新通知</div>
+                  <div class="text-2xs md:text-xs text-gray-400 mt-0.5 md:mt-1">
+                    2024/4/13 10:30
+                  </div>
+                  <p class="text-2xs md:text-xs mt-0.5 md:mt-1">
+                    短剧库新增50部热门短剧，点击查看...
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div
+                  class="text-2xs md:text-xs bg-purple-500 text-white rounded-full w-5 md:w-6 h-5 md:h-6 flex items-center justify-center mr-2 md:mr-3 mt-0.5 md:mt-1"
+                >
+                  热
+                </div>
+                <div>
+                  <div class="text-xs md:text-sm font-medium">系统维护公告</div>
+                  <div class="text-2xs md:text-xs text-gray-400 mt-0.5 md:mt-1">
+                    2024/4/12 22:00
+                  </div>
+                  <p class="text-2xs md:text-xs mt-0.5 md:mt-1">
+                    今晚23:00-01:00系统升级维护...
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div
+                  class="text-2xs md:text-xs bg-green-500 text-white rounded-full w-5 md:w-6 h-5 md:h-6 flex items-center justify-center mr-2 md:mr-3 mt-0.5 md:mt-1"
+                >
+                  活
+                </div>
+                <div>
+                  <div class="text-xs md:text-sm font-medium">活动预告</div>
+                  <div class="text-2xs md:text-xs text-gray-400 mt-0.5 md:mt-1">
+                    2024/4/12 15:45
+                  </div>
+                  <p class="text-2xs md:text-xs mt-0.5 md:mt-1">
+                    明日将开启限时免费下载活动...
+                  </p>
+                </div>
               </div>
             </div>
-            <p class="text-xs md:text-sm text-center text-black-300">
-              扫描二维码关注我们，随时随地获取资源
-            </p>
+          </div>
+
+          <!-- 二维码模块 -->
+          <div class="gradient-card rounded-lg p-3 md:p-4">
+            <h3
+              class="text-base md:text-lg font-semibold mb-3 md:mb-4 flex items-center"
+            >
+              <i class="fas fa-mobile-alt text-accent mr-2"></i>
+              手机访问
+            </h3>
+            <div class="flex flex-col items-center">
+              <div class="qr-code mb-2 md:mb-3">
+                <div
+                  class="w-24 md:w-32 h-24 md:h-32 bg-gray-200 flex items-center justify-center"
+                >
+                  <span class="text-2xs md:text-xs text-gray-600"
+                    >扫码查看</span
+                  >
+                </div>
+              </div>
+              <p class="text-xs md:text-sm text-center text-black-300">
+                扫描二维码关注我们，随时随地获取资源
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- 页脚 -->
-  <footer class="py-6 mt-10" style="background-color: var(--footer-bg); color: var(--footer-text)">
-    <div class="container mx-auto px-4">
-      <div class="flex flex-col md:flex-row justify-between items-center">
-        <div class="mb-4 md:mb-0">
-          <div class="flex items-center">
-            <i class="fas fa-fire flame-icon mr-2"></i>
-            <span class="font-medium">Torch - 火炬博客</span>
+    <!-- 页脚 -->
+    <footer
+      class="py-6 mt-10"
+      style="background-color: var(--footer-bg); color: var(--footer-text)"
+    >
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="mb-4 md:mb-0">
+            <div class="flex items-center">
+              <i class="fas fa-fire flame-icon mr-2"></i>
+              <span class="font-medium">Torch - 火炬博客</span>
+            </div>
+            <div class="text-xs text-gray-400 mt-1">
+              © 2025 www.torch.com（不是真的） 版权所有
+            </div>
           </div>
-          <div class="text-xs text-gray-400 mt-1">
-            © 2025 www.torch.com（不是真的） 版权所有
+          <div class="flex space-x-6">
+            <a
+              href="#"
+              style="color: var(--footer-link)"
+              class="hover:text-accent"
+              >关于我们</a
+            >
+            <a
+              href="#"
+              style="color: var(--footer-link)"
+              class="hover:text-accent"
+              >联系方式</a
+            >
+            <a
+              href="#"
+              style="color: var(--footer-link)"
+              class="hover:text-accent"
+              >用户协议</a
+            >
+            <a
+              href="#"
+              style="color: var(--footer-link)"
+              class="hover:text-accent"
+              >隐私政策</a
+            >
           </div>
-        </div>
-        <div class="flex space-x-6">
-          <a href="#" style="color: var(--footer-link)" class="hover:text-accent">关于我们</a>
-          <a href="#" style="color: var(--footer-link)" class="hover:text-accent">联系方式</a>
-          <a href="#" style="color: var(--footer-link)" class="hover:text-accent">用户协议</a>
-          <a href="#" style="color: var(--footer-link)" class="hover:text-accent">隐私政策</a>
         </div>
       </div>
-    </div>
-  </footer>
+    </footer>
 
-  <script>
-    // 主题切换功能
-    function toggleTheme() {
-      document.body.classList.toggle("light-mode");
-      document.body.classList.toggle("dark-mode");
+    <script>
+      // 主题切换功能
+      function toggleTheme() {
+        document.body.classList.toggle("light-mode");
+        document.body.classList.toggle("dark-mode");
 
-      const icons = document.querySelectorAll(".theme-toggle-icon");
-      icons.forEach((icon) => {
-        if (document.body.classList.contains("light-mode")) {
-          icon.classList.remove("fa-moon");
-          icon.classList.add("fa-sun");
-        } else {
-          icon.classList.remove("fa-sun");
-          icon.classList.add("fa-moon");
-        }
-      });
-    }
+        const icons = document.querySelectorAll(".theme-toggle-icon");
+        icons.forEach((icon) => {
+          if (document.body.classList.contains("light-mode")) {
+            icon.classList.remove("fa-moon");
+            icon.classList.add("fa-sun");
+          } else {
+            icon.classList.remove("fa-sun");
+            icon.classList.add("fa-moon");
+          }
+        });
+      }
 
-    // 为所有主题切换按钮添加事件
-    document
-      .getElementById("themeToggle")
-      .addEventListener("click", toggleTheme);
+      // 为所有主题切换按钮添加事件
+      document
+        .getElementById("themeToggle")
+        .addEventListener("click", toggleTheme);
 
-    // 移动菜单功能
-    const mobileMenuButton = document.getElementById("mobileMenuButton");
-    const mobileMenu = document.getElementById("mobileMenu");
-    const mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
-    const closeMobileMenu = document.getElementById("closeMobileMenu");
+      // 移动菜单功能
+      const mobileMenuButton = document.getElementById("mobileMenuButton");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
+      const closeMobileMenu = document.getElementById("closeMobileMenu");
 
-    function openMobileMenu() {
-      mobileMenu.classList.add("active");
-      mobileMenuOverlay.classList.add("active");
-      document.body.style.overflow = "hidden";
-    }
+      function openMobileMenu() {
+        mobileMenu.classList.add("active");
+        mobileMenuOverlay.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
 
-    function closeMobileMenuFunc() {
-      mobileMenu.classList.remove("active");
-      mobileMenuOverlay.classList.remove("active");
-      document.body.style.overflow = "";
-    }
+      function closeMobileMenuFunc() {
+        mobileMenu.classList.remove("active");
+        mobileMenuOverlay.classList.remove("active");
+        document.body.style.overflow = "";
+      }
 
-    mobileMenuButton.addEventListener("click", openMobileMenu);
-    closeMobileMenu.addEventListener("click", closeMobileMenuFunc);
-    mobileMenuOverlay.addEventListener("click", closeMobileMenuFunc);
+      mobileMenuButton.addEventListener("click", openMobileMenu);
+      closeMobileMenu.addEventListener("click", closeMobileMenuFunc);
+      mobileMenuOverlay.addEventListener("click", closeMobileMenuFunc);
 
-    // 更新时间
-    function updateTime() {
-      const now = new Date();
-      const timeString = now
-        .toLocaleString("zh-CN", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        })
-        .replace(/\//g, "/");
+      // 更新时间
+      function updateTime() {
+        const now = new Date();
+        const timeString = now
+          .toLocaleString("zh-CN", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false,
+          })
+          .replace(/\//g, "/");
 
-      document.getElementById("currentTime").textContent = timeString;
-      document.getElementById("updateTime").textContent = timeString;
-      document.getElementById("chatTime").textContent = timeString;
-    }
+        document.getElementById("currentTime").textContent = timeString;
+        document.getElementById("updateTime").textContent = timeString;
+        document.getElementById("chatTime").textContent = timeString;
+      }
 
-    setInterval(updateTime, 1000);
-    updateTime();
+      setInterval(updateTime, 1000);
+      updateTime();
 
-    // 轮播图功能
-    let currentSlide = 0;
-    const slides = document.querySelectorAll(".carousel-item");
-    const indicators = document.querySelectorAll(".carousel-indicator");
-    const carousel = document.getElementById("carousel");
+      // 轮播图功能
+      let currentSlide = 0;
+      const slides = document.querySelectorAll(".carousel-item");
+      const indicators = document.querySelectorAll(".carousel-indicator");
+      const carousel = document.getElementById("carousel");
 
-    function goToSlide(index) {
-      currentSlide = index;
-      const offset = -currentSlide * 100;
-      carousel.style.transform = `translateX(${offset}%)`;
+      function goToSlide(index) {
+        currentSlide = index;
+        const offset = -currentSlide * 100;
+        carousel.style.transform = `translateX(${offset}%)`;
 
-      indicators.forEach((indicator, i) => {
-        if (i === currentSlide) {
-          indicator.classList.add("active");
-        } else {
-          indicator.classList.remove("active");
-        }
-      });
-    }
+        indicators.forEach((indicator, i) => {
+          if (i === currentSlide) {
+            indicator.classList.add("active");
+          } else {
+            indicator.classList.remove("active");
+          }
+        });
+      }
 
-    indicators.forEach((indicator, index) => {
-      indicator.addEventListener("click", () => goToSlide(index));
-    });
-
-    function nextSlide() {
-      currentSlide = (currentSlide + 1) % slides.length;
-      goToSlide(currentSlide);
-    }
-
-    // 在线人数随机变化
-    setInterval(() => {
-      const onlineCount = Math.floor(Math.random() * 10) + 1;
-      document.getElementById("onlineCount").textContent = onlineCount;
-    }, 10000);
-
-    // 按钮点击效果
-    document.querySelectorAll(".btn-accent").forEach((button) => {
-      button.addEventListener("mousedown", () => {
-        button.style.transform = "translateY(0)";
-      });
-      button.addEventListener("mouseup", () => {
-        button.style.transform = "translateY(-2px)";
-      });
-      button.addEventListener("mouseleave", () => {
-        button.style.transform = "translateY(-2px)";
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener("click", () => goToSlide(index));
       });
 
-      // 添加触摸事件支持
-      button.addEventListener("touchstart", () => {
-        button.style.transform = "translateY(0)";
+      function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        goToSlide(currentSlide);
+      }
+
+      // 在线人数随机变化
+      setInterval(() => {
+        const onlineCount = Math.floor(Math.random() * 10) + 1;
+        document.getElementById("onlineCount").textContent = onlineCount;
+      }, 10000);
+
+      // 按钮点击效果
+      document.querySelectorAll(".btn-accent").forEach((button) => {
+        button.addEventListener("mousedown", () => {
+          button.style.transform = "translateY(0)";
+        });
+        button.addEventListener("mouseup", () => {
+          button.style.transform = "translateY(-2px)";
+        });
+        button.addEventListener("mouseleave", () => {
+          button.style.transform = "translateY(-2px)";
+        });
+
+        // 添加触摸事件支持
+        button.addEventListener("touchstart", () => {
+          button.style.transform = "translateY(0)";
+        });
+        button.addEventListener("touchend", () => {
+          button.style.transform = "translateY(-2px)";
+        });
       });
-      button.addEventListener("touchend", () => {
-        button.style.transform = "translateY(-2px)";
+
+      // 博客文章功能
+      const articleCards = document.querySelectorAll(".article-card");
+      const articleDetail = document.getElementById("articleDetail");
+      const blogList = document.getElementById("blogList");
+      const backToBlog = document.getElementById("backToBlog");
+
+      // 点击文章卡片显示详情
+      articleCards.forEach((card) => {
+        card.addEventListener("click", (e) => {
+          // 阻止默认行为，防止链接跳转
+          e.preventDefault();
+
+          // 添加动画类
+          blogList.classList.add("page-exit");
+          articleDetail.classList.remove("hidden");
+          articleDetail.classList.add("page-enter");
+
+          // 动画结束后移除类
+          setTimeout(() => {
+            blogList.classList.add("hidden");
+            blogList.classList.remove("page-exit");
+            articleDetail.classList.remove("page-enter");
+          }, 300);
+
+          // 更新URL哈希
+          const articleId = card.getAttribute("data-article");
+          window.location.hash = articleId;
+
+          // 滚动到顶部
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        });
       });
-    });
 
-    // 博客文章功能
-    const articleCards = document.querySelectorAll(".article-card");
-    const articleDetail = document.getElementById("articleDetail");
-    const blogList = document.getElementById("blogList");
-    const backToBlog = document.getElementById("backToBlog");
-
-    // 点击文章卡片显示详情
-    articleCards.forEach((card) => {
-      card.addEventListener("click", (e) => {
-        // 阻止默认行为，防止链接跳转
-        e.preventDefault();
-
+      // 返回文章列表
+      backToBlog.addEventListener("click", () => {
         // 添加动画类
-        blogList.classList.add("page-exit");
-        articleDetail.classList.remove("hidden");
-        articleDetail.classList.add("page-enter");
+        articleDetail.classList.add("page-exit");
+        blogList.classList.remove("hidden");
+        blogList.classList.add("page-enter");
 
         // 动画结束后移除类
         setTimeout(() => {
-          blogList.classList.add("hidden");
-          blogList.classList.remove("page-exit");
-          articleDetail.classList.remove("page-enter");
+          articleDetail.classList.add("hidden");
+          articleDetail.classList.remove("page-exit");
+          blogList.classList.remove("page-enter");
         }, 300);
 
         // 更新URL哈希
-        const articleId = card.getAttribute("data-article");
-        window.location.hash = articleId;
+        window.location.hash = "blog";
 
         // 滚动到顶部
         window.scrollTo({
@@ -1377,104 +1600,78 @@ aria2c -x16 -s16 http://example.com/file.zip</code></pre>
           behavior: "smooth",
         });
       });
-    });
 
-    // 返回文章列表
-    backToBlog.addEventListener("click", () => {
-      // 添加动画类
-      articleDetail.classList.add("page-exit");
-      blogList.classList.remove("hidden");
-      blogList.classList.add("page-enter");
+      // 处理URL哈希变化
+      window.addEventListener("hashchange", () => {
+        const hash = window.location.hash.substring(1);
 
-      // 动画结束后移除类
-      setTimeout(() => {
-        articleDetail.classList.add("hidden");
-        articleDetail.classList.remove("page-exit");
-        blogList.classList.remove("page-enter");
-      }, 300);
-
-      // 更新URL哈希
-      window.location.hash = "blog";
-
-      // 滚动到顶部
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
+        if (hash === "blog" || hash === "") {
+          // 显示文章列表
+          articleDetail.classList.add("hidden");
+          blogList.classList.remove("hidden");
+        } else if (hash.startsWith("article")) {
+          // 显示对应文章详情
+          blogList.classList.add("hidden");
+          articleDetail.classList.remove("hidden");
+        }
       });
-    });
 
-    // 处理URL哈希变化
-    window.addEventListener("hashchange", () => {
-      const hash = window.location.hash.substring(1);
+      // 页面加载时检查哈希
+      window.addEventListener("load", () => {
+        const hash = window.location.hash.substring(1);
 
-      if (hash === "blog" || hash === "") {
-        // 显示文章列表
-        articleDetail.classList.add("hidden");
-        blogList.classList.remove("hidden");
-      } else if (hash.startsWith("article")) {
-        // 显示对应文章详情
-        blogList.classList.add("hidden");
-        articleDetail.classList.remove("hidden");
-      }
-    });
+        if (hash.startsWith("article")) {
+          // 直接显示文章详情
+          blogList.classList.add("hidden");
+          articleDetail.classList.remove("hidden");
+        }
+      });
 
-    // 页面加载时检查哈希
-    window.addEventListener("load", () => {
-      const hash = window.location.hash.substring(1);
-
-      if (hash.startsWith("article")) {
-        // 直接显示文章详情
-        blogList.classList.add("hidden");
-        articleDetail.classList.remove("hidden");
-      }
-    });
-
-    // 响应式调整
-    function handleResize() {
-      // 如果窗口大小变化到移动端，停止自动轮播
-      if (window.innerWidth <= 768) {
-        clearInterval(carouselInterval);
-      } else {
-        // 如果窗口大小变化到桌面端，重新启动自动轮播
-        if (typeof carouselInterval === "undefined") {
-          carouselInterval = setInterval(nextSlide, 5000);
+      // 响应式调整
+      function handleResize() {
+        // 如果窗口大小变化到移动端，停止自动轮播
+        if (window.innerWidth <= 768) {
+          clearInterval(carouselInterval);
+        } else {
+          // 如果窗口大小变化到桌面端，重新启动自动轮播
+          if (typeof carouselInterval === "undefined") {
+            carouselInterval = setInterval(nextSlide, 5000);
+          }
         }
       }
-    }
 
-    let carouselInterval;
-    if (window.innerWidth > 768) {
-      carouselInterval = setInterval(nextSlide, 5000);
-    }
+      let carouselInterval;
+      if (window.innerWidth > 768) {
+        carouselInterval = setInterval(nextSlide, 5000);
+      }
 
-    window.addEventListener("resize", handleResize);
+      window.addEventListener("resize", handleResize);
 
-    // 移动端优化：防止点击穿透
-    document.addEventListener(
-      "touchstart",
-      function (e) {
-        if (e.target.tagName === "A" || e.target.tagName === "BUTTON") {
-          e.preventDefault();
-          e.target.click();
-        }
-      },
-      { passive: false }
-    );
+      // 移动端优化：防止点击穿透
+      document.addEventListener(
+        "touchstart",
+        function (e) {
+          if (e.target.tagName === "A" || e.target.tagName === "BUTTON") {
+            e.preventDefault();
+            e.target.click();
+          }
+        },
+        { passive: false }
+      );
 
-    // 移动端优化：防止双击缩放
-    let lastTouchEnd = 0;
-    document.addEventListener(
-      "touchend",
-      function (event) {
-        const now = new Date().getTime();
-        if (now - lastTouchEnd <= 300) {
-          event.preventDefault();
-        }
-        lastTouchEnd = now;
-      },
-      false
-    );
-  </script>
-</body>
-
+      // 移动端优化：防止双击缩放
+      let lastTouchEnd = 0;
+      document.addEventListener(
+        "touchend",
+        function (event) {
+          const now = new Date().getTime();
+          if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+          }
+          lastTouchEnd = now;
+        },
+        false
+      );
+    </script>
+  </body>
 </html>

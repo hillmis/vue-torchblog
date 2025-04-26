@@ -117,7 +117,7 @@
             <div>
               <label class="block text-sm font-medium mb-2">个人简介</label>
               <div class="space-y-2">
-                <div class="flex flex-wrap gap-2 p-2 rounded-lg bg-gray-800 border border-gray-700 mb-2 min-h-16">
+                <div class="flex flex-wrap gap-2 p-2 rounded-lg  mb-2 min-h-16">
                   <div v-for="(tag, index) in bioTags" :key="index" class="bio-badge flex items-center gap-1 group">
                     <span>{{ tag }}</span>
                     <button type="button" @click="removeTag(index)" class="w-4 h-4 rounded-full flex items-center justify-center text-xs opacity-70 
@@ -151,7 +151,7 @@
                         class="fas fa-check text-xs text-white transform scale-0 peer-checked:scale-100 transition-transform"></i>
                     </div>
                   </div>
-                  <span class="ml-2 text-gray-300 group-hover:text-white transition-colors">接收邮件通知</span>
+                  <span class="ml-2 text-gray-400 group-hover:text-white transition-colors">接收邮件通知</span>
                 </label>
                 <label class="flex items-center cursor-pointer group">
                   <div class="relative">
@@ -162,7 +162,7 @@
                         class="fas fa-check text-xs text-white transform scale-0 peer-checked:scale-100 transition-transform"></i>
                     </div>
                   </div>
-                  <span class="ml-2 text-gray-300 group-hover:text-white transition-colors">订阅站点周报</span>
+                  <span class="ml-2 text-gray-400 group-hover:text-white transition-colors">订阅站点周报</span>
                 </label>
               </div>
             </div>

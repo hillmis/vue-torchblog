@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Floating Island UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+
+      .island-enter-active,
+      .island-leave-active {
+        transition: all 0.3s ease;
+      }
+
+      .island-enter-from,
+      .island-leave-to {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+
+      /* Glass morphism effect */
+      .backdrop-blur-lg {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+
+      /* Height transition */
+      .backdrop-blur-lg {
+        transition: height 0.3s ease-in-out, background-color 0.3s ease;
+      }
+
+      /* Expanded state padding */
+      .h-auto {
+        min-height: 3rem;
+        padding-bottom: 1rem;
+      }
+
+      /* Dark mode shadow */
+      .shadow-xl {
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+
+      .dark .shadow-xl {
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3),
+          0 10px 10px -5px rgba(0, 0, 0, 0.25);
+      }
+
+      /* Flame animation */
+      .flame-icon {
+        color: #f59e0b;
+        animation: flicker 5s infinite alternate, float 6s ease-in-out infinite;
+        transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+      }
+
+      .flame-icon:hover {
+        transform: scale(1.2);
+        filter: drop-shadow(0 0 12px #f59e0b);
+        animation: flicker 2s infinite alternate, float 6s ease-in-out infinite;
+      }
+
+      @keyframes flicker {
+        0%,
+        100% {
+          opacity: 1;
+          text-shadow: 0 0 8px #f59e0b, 0 0 15px #f59e0b, 0 0 20px #f59e0b;
+        }
+        25% {
+          opacity: 0.9;
+          text-shadow: 0 0 12px #f59e0b, 0 0 20px #f59e0b, 0 0 30px #f59e0b;
+        }
+        50% {
+          opacity: 0.95;
+          text-shadow: 0 0 15px #f59e0b, 0 0 25px #f59e0b, 0 0 35px #f59e0b;
+        }
+        75% {
+          opacity: 0.92;
+          text-shadow: 0 0 18px #f59e0b, 0 0 28px #f59e0b, 0 0 38px #f59e0b;
+        }
+      }
+
+      /* Responsive transitions */
+      .w-auto {
+        transition: width 0.3s ease-in-out;
+      }
+      .text-sm {
+        transition: opacity 0.3s ease;
+      }
+
+      /* Hover effects */
+      .cursor-pointer:hover .text-sm {
+        opacity: 0.8;
+      }
+
+      /* Text overflow */
+      .truncate {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
+
+      /* Prevent icon shrinking */
+      .shrink-0 {
+        flex-shrink: 0;
+      }
+
+      /* Typewriter effect */
+      .typewriter {
+        border-right: 2px solid;
+        animation: cursor 0.8s infinite;
+      }
+
+      @keyframes cursor {
+        from,
+        to {
+          border-color: transparent;
+        }
+        50% {
+          border-color: currentColor;
+        }
+      }
+
+      /* Text styling */
+      .text-sm {
+        letter-spacing: 0.05em;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+
+      /* Timer progress */
+      .timer-progress {
+        width: 100%;
+        height: 6px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+
+      .timer-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        transition: width 0.1s linear;
+        border-radius: 3px;
+      }
+
+      /* Music controls */
+      .music-controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .music-progress {
+        flex-grow: 1;
+        height: 6px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .music-progress:hover {
+        height: 8px;
+      }
+
+      .music-progress-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        width: 0%;
+        border-radius: 3px;
+      }
+
+      .music-time {
+        font-size: 0.75rem;
+        opacity: 0.7;
+      }
+
+      /* Note editor */
+      .note-editor {
+        width: 100%;
+        min-height: 120px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 12px;
+        color: inherit;
+        resize: none;
+        outline: none;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        transition: all 0.2s ease;
+      }
+
+      .note-editor:focus {
+        border-color: rgba(59, 130, 246, 0.5);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      }
+
+      /* Settings toggle */
+      .settings-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      /* Smooth transitions */
+      .transition-smooth {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Button styles */
+      .btn {
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .btn-primary {
+        background-color: #3b82f6;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: #2563eb;
+        transform: translateY(-1px);
+      }
+
+      .btn-secondary {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .btn-secondary:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-1px);
+      }
+
+      /* Icon button */
+      .icon-btn {
+        width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+      }
+
+      .icon-btn:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: scale(1.1);
+      }
+
+      /* Quick actions */
+      .quick-actions {
+        display: flex;
+        gap: 8px;
+        padding: 8px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+      }
+
+      /* Weather icon animation */
+      .weather-icon {
+        animation: float 8s ease-in-out infinite;
+      }
+
+      /* Pulse animation */
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      .pulse {
+        animation: pulse 2s infinite;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 3px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 3px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      /* Ripple effect */
+      .ripple {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .ripple-effect {
+        position: absolute;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.4);
+        transform: scale(0);
+        animation: ripple 0.6s linear;
+        pointer-events: none;
+      }
+
+      @keyframes ripple {
+        to {
+          transform: scale(4);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="dark bg-gradient-to-br from-gray-900 to-gray-800 text-white min-h-screen flex items-center justify-center p-4"
+  >
+    <div id="app" class="w-full max-w-md mx-auto">
+      <!-- Floating Island -->
+      <div
+        id="floating-island"
+        class="fixed left-1/2 -translate-x-1/2 top-4 z-50 cursor-pointer w-auto min-w-[200px] max-w-[400px]"
+      >
+        <div
+          class="backdrop-blur-lg border rounded-2xl shadow-xl overflow-hidden transition-all duration-300 h-auto bg-black/60 border-gray-700/50 hover:border-gray-600/50"
+        >
+          <div
+            class="px-4 h-14 flex items-center justify-between overflow-hidden text-white"
+          >
+            <div class="flex items-center gap-4 min-w-0 flex-1">
+              ${renderIcon()}
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-col">
+                  <span class="text-sm font-medium truncate"
+                    >Floating Island UI</span
+                  >
+                  <span class="text-xs opacity-75 truncate"
+                    >Interactive Component</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 shrink-0">
+              <i
+                class="fas fa-chevron-up transition-transform duration-300"
+              ></i>
+            </div>
+          </div>
+          <div class="px-4 pb-4">
+            <div class="border-t pt-1 border-gray-700/50">
+              <div class="mt-1 flex justify-center">
+                <div class="quick-actions">
+                  <button
+                    class="icon-btn"
+                    onclick="switchToType('music', event)"
+                  >
+                    <i class="fas fa-music"></i>
+                  </button>
+                  <button
+                    class="icon-btn"
+                    onclick="switchToType('timer', event)"
+                  >
+                    <i class="fas fa-clock"></i>
+                  </button>
+                  <button
+                    class="icon-btn"
+                    onclick="switchToType('note', event)"
+                  >
+                    <i class="fas fa-sticky-note"></i>
+                  </button>
+                  <button
+                    class="icon-btn"
+                    onclick="switchToType('weather', event)"
+                  >
+                    <i class="fas fa-cloud-sun"></i>
+                  </button>
+                  <button
+                    class="icon-btn"
+                    onclick="switchToType('settings', event)"
+                  >
+                    <i class="fas fa-cog"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // App state
+      const state = {
+        isVisible: true,
+        expanded: true,
+        type: "notification",
+        isDarkMode: true,
+        showQuickActions: false,
+        hasContent: true,
+        defaultIcon: false,
+
+        // Notification state
+        notification: {
+          title: "New Message",
+          content: "You have 3 new notifications. Click to view them.",
+          actions: [
+            { text: "View", handler: () => alert("Opening notifications...") },
+            {
+              text: "Dismiss",
+              handler: () => alert("Notifications dismissed"),
+            },
+          ],
+        },
+
+        // Music state
+        music: {
+          isPlaying: false,
+          currentTime: 45,
+          duration: 180,
+          info: {
+            cover: "https://source.unsplash.com/random/300x300/?music",
+            title: "Midnight City",
+            artist: "M83",
+          },
+        },
+
+        // Timer state
+        timer: {
+          isRunning: false,
+          time: 1500, // 25 minutes in seconds
+          initialTime: 1500,
+        },
+
+        // Note state
+        note: {
+          content:
+            "This is a sample note. Click to edit.\n\nYou can write anything here and it will be saved locally.",
+        },
+
+        // Weather state
+        weather: {
+          condition: "Sunny",
+          temp: 25,
+          humidity: 60,
+          wind: 12,
+          location: "San Francisco",
+        },
+
+        // Settings state
+        settings: {
+          darkMode: true,
+          animations: true,
+          sound: true,
+          notifications: true,
+        },
+      };
+
+      // DOM elements
+      const appElement = document.getElementById("app");
+      const islandElement = document.getElementById("floating-island");
+
+      // Initialize the app
+      function init() {
+        render();
+        setupEventListeners();
+        addRippleEffects();
+      }
+
+      // Render the UI based on state
+      function render() {
+        // Main container classes
+        const containerClasses = [
+          "fixed left-1/2 -translate-x-1/2 top-4 z-50 cursor-pointer",
+          state.expanded
+            ? "w-auto min-w-[200px] max-w-[400px]"
+            : state.hasContent
+            ? "w-auto min-w-[120px] max-w-[300px]"
+            : "w-[55px]",
+        ].join(" ");
+
+        // Island content classes
+        const islandClasses = [
+          "backdrop-blur-lg border rounded-2xl shadow-xl overflow-hidden transition-all duration-300",
+          state.expanded ? "h-auto" : "h-14",
+          state.isDarkMode
+            ? "bg-black/60 border-gray-700/50 hover:border-gray-600/50"
+            : "bg-white/80 border-gray-200/50 hover:border-gray-300/50",
+        ].join(" ");
+
+        // Text color
+        const textColor = state.isDarkMode ? "text-white" : "text-gray-900";
+
+        // Render the island
+        islandElement.className = containerClasses;
+        islandElement.innerHTML = `
+                <div class="${islandClasses}" onclick="handleMainClick()">
+                    <!-- Header -->
+                    <div class="px-4 h-14 flex items-center justify-between overflow-hidden ${textColor}">
+                        <div class="flex items-center gap-4 min-w-0 flex-1">
+                            ${renderIcon()}
+                            <div class="flex-1 min-w-0">
+                                ${renderTitle()}
+                            </div>
+                        </div>
+                        ${renderControls()}
+                    </div>
+                    
+                    <!-- Expanded content -->
+                    ${state.expanded ? renderExpandedContent() : ""}
+                </div>
+            `;
+
+        // Update ripple effects after render
+        addRippleEffects();
+      }
+
+      // Render the appropriate icon based on type
+      function renderIcon() {
+        if (state.defaultIcon) {
+          return `<i class="fas fa-fire text-2xl flame-icon shrink-0"></i>`;
+        }
+
+        switch (state.type) {
+          case "music":
+            return `<img src="${state.music.info.cover}" class="w-8 h-8 rounded-lg object-cover shrink-0 shadow-md" />`;
+          case "timer":
+            return `<i class="fas fa-clock text-2xl shrink-0 ${
+              state.timer.isRunning ? "text-blue-400 pulse" : ""
+            }"></i>`;
+          case "note":
+            return `<i class="fas fa-sticky-note text-2xl shrink-0 text-yellow-400"></i>`;
+          case "weather":
+            return `<i class="fas fa-cloud-sun text-2xl shrink-0 weather-icon text-amber-300"></i>`;
+          case "settings":
+            return `<i class="fas fa-cog text-2xl shrink-0 text-gray-400 animate-spin" style="animation-duration: 3s"></i>`;
+          default:
+            return `<i class="fas fa-bell text-2xl shrink-0 ${
+              state.notification.actions.length
+                ? "text-red-400 animate-bounce"
+                : ""
+            }" style="animation-duration: 2s"></i>`;
+        }
+      }
+
+      // Render the title and subtitle
+      function renderTitle() {
+        if (!state.hasContent) {
+          return `<span class="text-sm font-medium typewriter">Floating Island UI</span>`;
+        }
+
+        let title, subtitle;
+
+        switch (state.type) {
+          case "notification":
+            title = state.notification.title;
+            subtitle = state.notification.actions
+              .map((a) => a.text)
+              .join(" · ");
+            break;
+          case "music":
+            title = state.music.info.title;
+            subtitle = state.music.info.artist;
+            break;
+          case "timer":
+            title = "Timer";
+            subtitle = formatTime(state.timer.time);
+            break;
+          case "note":
+            title = "Quick Note";
+            subtitle = "Click to edit";
+            break;
+          case "weather":
+            title = "Weather";
+            subtitle = state.weather.location;
+            break;
+          case "settings":
+            title = "Settings";
+            subtitle = "App preferences";
+            break;
+          default:
+            title = "Notification";
+            subtitle = "";
+        }
+
+        return `
+                <div class="flex flex-col">
+                    <span class="text-sm font-medium truncate">${title}</span>
+                    <span class="text-xs opacity-75 truncate">${subtitle}</span>
+                </div>
+            `;
+      }
+
+      // Render control buttons
+      function renderControls() {
+        let controls = "";
+
+        // Quick actions button
+        if (!state.expanded && !state.hasContent) {
+          controls += `
+                    <button class="icon-btn ripple" onclick="toggleQuickActions(event)">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                `;
+        }
+
+        // Type-specific controls
+        switch (state.type) {
+          case "music":
+            if (!state.expanded) {
+              controls += `
+                            <div class="flex items-center gap-2">
+                                <button class="icon-btn ripple" onclick="toggleMusicPlay(event)">
+                                    <i class="fas ${
+                                      state.music.isPlaying
+                                        ? "fa-pause"
+                                        : "fa-play"
+                                    }"></i>
+                                </button>
+                            </div>
+                        `;
+            }
+            break;
+          case "timer":
+            if (!state.expanded) {
+              controls += `
+                            <div class="flex items-center gap-2">
+                                <button class="icon-btn ripple" onclick="toggleTimer(event)">
+                                    <i class="fas ${
+                                      state.timer.isRunning
+                                        ? "fa-pause"
+                                        : "fa-play"
+                                    }"></i>
+                                </button>
+                            </div>
+                        `;
+            }
+            break;
+        }
+
+        // Expand/collapse arrow
+        if (state.expanded) {
+          controls += `
+                    <button class="icon-btn" onclick="toggleExpand(event)">
+                        <i class="fas fa-chevron-up transition-transform duration-300"></i>
+                    </button>
+                `;
+        }
+
+        // Quick actions menu
+        if (state.showQuickActions) {
+          controls += `
+                    <div class="absolute bottom-full left-0 mb-2 bg-black/80 backdrop-blur-lg rounded-xl shadow-lg p-2 flex gap-2">
+                        <button class="icon-btn ripple" onclick="switchToType('music', event)">
+                            <i class="fas fa-music"></i>
+                        </button>
+                        <button class="icon-btn ripple" onclick="switchToType('timer', event)">
+                            <i class="fas fa-clock"></i>
+                        </button>
+                        <button class="icon-btn ripple" onclick="switchToType('note', event)">
+                            <i class="fas fa-sticky-note"></i>
+                        </button>
+                        <button class="icon-btn ripple" onclick="switchToType('weather', event)">
+                            <i class="fas fa-cloud-sun"></i>
+                        </button>
+                        <button class="icon-btn ripple" onclick="switchToType('settings', event)">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                `;
+        }
+
+        return `<div class="flex items-center gap-3 shrink-0">${controls}</div>`;
+      }
+
+      // Render expanded content
+      function renderExpandedContent() {
+        switch (state.type) {
+          case "notification":
+            return renderNotificationContent();
+          case "music":
+            return renderMusicContent();
+          case "timer":
+            return renderTimerContent();
+          case "note":
+            return renderNoteContent();
+          case "weather":
+            return renderWeatherContent();
+          case "settings":
+            return renderSettingsContent();
+          default:
+            return "";
+        }
+      }
+
+      // Render notification content
+      function renderNotificationContent() {
+        return `
+                <div class="px-4 pb-4">
+                    <div class="border-t pt-1 ${
+                      state.isDarkMode
+                        ? "border-gray-700/50"
+                        : "border-gray-200/50"
+                    }">
+                        <div class="mt-1 flex justify-center">
+                            <div class="quick-actions">
+                                <button class="icon-btn ripple" onclick="switchToType('music', event)">
+                                    <i class="fas fa-music"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('timer', event)">
+                                    <i class="fas fa-clock"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('note', event)">
+                                    <i class="fas fa-sticky-note"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('weather', event)">
+                                    <i class="fas fa-cloud-sun"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('settings', event)">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-4 mt-4">
+                            <div class="flex items-start gap-3 p-3 bg-white/5 rounded-lg">
+                                <i class="fas fa-envelope mt-1 text-blue-400"></i>
+                                <div>
+                                    <h4 class="text-sm font-medium">New Message</h4>
+                                    <p class="text-xs opacity-75 mt-1">You have a new message from John Doe</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-white/5 rounded-lg">
+                                <i class="fas fa-calendar-check mt-1 text-green-400"></i>
+                                <div>
+                                    <h4 class="text-sm font-medium">Event Reminder</h4>
+                                    <p class="text-xs opacity-75 mt-1">Team meeting in 15 minutes</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-white/5 rounded-lg">
+                                <i class="fas fa-bell mt-1 text-yellow-400"></i>
+                                <div>
+                                    <h4 class="text-sm font-medium">System Alert</h4>
+                                    <p class="text-xs opacity-75 mt-1">Your storage is almost full</p>
+                                </div>
+                            </div>
+                            <div class="flex space-x-3 mt-3">
+                                ${state.notification.actions
+                                  .map(
+                                    (action) => `
+                                    <button class="btn btn-secondary ripple flex-1" onclick="handleAction('${action.text}')">
+                                        ${action.text}
+                                    </button>
+                                `
+                                  )
+                                  .join("")}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+      }
+
+      // Render music content
+      function renderMusicContent() {
+        const progressPercent =
+          (state.music.currentTime / state.music.duration) * 100;
+
+        return `
+                <div class="px-4 pb-4">
+                    <div class="border-t pt-1 ${
+                      state.isDarkMode
+                        ? "border-gray-700/50"
+                        : "border-gray-200/50"
+                    }">
+                        <div class="mt-1 flex justify-center">
+                            <div class="quick-actions">
+                                <button class="icon-btn ripple" onclick="switchToType('notification', event)">
+                                    <i class="fas fa-bell"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('timer', event)">
+                                    <i class="fas fa-clock"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('note', event)">
+                                    <i class="fas fa-sticky-note"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('weather', event)">
+                                    <i class="fas fa-cloud-sun"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('settings', event)">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center gap-4">
+                            <img src="${
+                              state.music.info.cover
+                            }" class="w-16 h-16 rounded-lg object-cover shadow-md" />
+                            <div class="flex-1 min-w-0">
+                                <h3 class="text-sm font-medium truncate">${
+                                  state.music.info.title
+                                }</h3>
+                                <p class="text-xs opacity-75 truncate">${
+                                  state.music.info.artist
+                                }</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 music-controls">
+                            <button class="icon-btn ripple" onclick="skipBackward(event)">
+                                <i class="fas fa-backward"></i>
+                            </button>
+                            <button class="icon-btn ripple bg-blue-600 hover:bg-blue-700" onclick="toggleMusicPlay(event)">
+                                <i class="fas ${
+                                  state.music.isPlaying ? "fa-pause" : "fa-play"
+                                }"></i>
+                            </button>
+                            <button class="icon-btn ripple" onclick="skipForward(event)">
+                                <i class="fas fa-forward"></i>
+                            </button>
+                        </div>
+                        <div class="mt-4">
+                            <div class="music-progress" onclick="seekMusic(event)">
+                                <div class="music-progress-bar" style="width: ${progressPercent}%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs mt-1">
+                                <span class="music-time">${formatTime(
+                                  state.music.currentTime
+                                )}</span>
+                                <span class="music-time">${formatTime(
+                                  state.music.duration
+                                )}</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 grid grid-cols-3 gap-2">
+                            <button class="icon-btn ripple" onclick="setVolume(25)">
+                                <i class="fas fa-volume-down"></i>
+                            </button>
+                            <button class="icon-btn ripple" onclick="setVolume(50)">
+                                <i class="fas fa-volume"></i>
+                            </button>
+                            <button class="icon-btn ripple" onclick="setVolume(75)">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+      }
+
+      // Render timer content
+      function renderTimerContent() {
+        const progressPercent =
+          ((state.timer.initialTime - state.timer.time) /
+            state.timer.initialTime) *
+          100;
+
+        return `
+                <div class="px-4 pb-4">
+                    <div class="border-t pt-1 ${
+                      state.isDarkMode
+                        ? "border-gray-700/50"
+                        : "border-gray-200/50"
+                    }">
+                        <div class="mt-1 flex justify-center">
+                            <div class="quick-actions">
+                                <button class="icon-btn ripple" onclick="switchToType('notification', event)">
+                                    <i class="fas fa-bell"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('music', event)">
+                                    <i class="fas fa-music"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('note', event)">
+                                    <i class="fas fa-sticky-note"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('weather', event)">
+                                    <i class="fas fa-cloud-sun"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('settings', event)">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <div class="text-5xl font-mono font-medium">${formatTime(
+                              state.timer.time
+                            )}</div>
+                            <div class="mt-6 flex justify-center gap-3">
+                                <button class="btn btn-primary ripple flex-1" onclick="toggleTimer(event)">
+                                    ${state.timer.isRunning ? "Pause" : "Start"}
+                                </button>
+                                <button class="btn btn-secondary ripple flex-1" onclick="resetTimer(event)">
+                                    Reset
+                                </button>
+                            </div>
+                            <div class="mt-6">
+                                <div class="timer-progress">
+                                    <div class="timer-progress-bar" style="width: ${progressPercent}%"></div>
+                                </div>
+                            </div>
+                            <div class="mt-6 grid grid-cols-3 gap-3">
+                                <button class="btn btn-secondary ripple" onclick="setTimer(300)">
+                                    5 min
+                                </button>
+                                <button class="btn btn-secondary ripple" onclick="setTimer(900)">
+                                    15 min
+                                </button>
+                                <button class="btn btn-secondary ripple" onclick="setTimer(1800)">
+                                    30 min
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+      }
+
+      // Render note content
+      function renderNoteContent() {
+        return `
+                <div class="px-4 pb-4">
+                    <div class="border-t pt-1 ${
+                      state.isDarkMode
+                        ? "border-gray-700/50"
+                        : "border-gray-200/50"
+                    }">
+                        <div class="mt-1 flex justify-center">
+                            <div class="quick-actions">
+                                <button class="icon-btn ripple" onclick="switchToType('notification', event)">
+                                    <i class="fas fa-bell"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('music', event)">
+                                    <i class="fas fa-music"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('timer', event)">
+                                    <i class="fas fa-clock"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('weather', event)">
+                                    <i class="fas fa-cloud-sun"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('settings', event)">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <textarea class="note-editor" placeholder="Type your note here...">${
+                              state.note.content
+                            }</textarea>
+                        </div>
+                        <div class="mt-3 flex justify-end gap-3">
+                            <button class="btn btn-secondary ripple" onclick="clearNote()">
+                                Clear
+                            </button>
+                            <button class="btn btn-primary ripple" onclick="saveNote()">
+                                Save Note
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+      }
+
+      // Render weather content
+      function renderWeatherContent() {
+        return `
+                <div class="px-4 pb-4">
+                    <div class="border-t pt-1 ${
+                      state.isDarkMode
+                        ? "border-gray-700/50"
+                        : "border-gray-200/50"
+                    }">
+                        <div class="mt-1 flex justify-center">
+                            <div class="quick-actions">
+                                <button class="icon-btn ripple" onclick="switchToType('notification', event)">
+                                    <i class="fas fa-bell"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('music', event)">
+                                    <i class="fas fa-music"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('timer', event)">
+                                    <i class="fas fa-clock"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('note', event)">
+                                    <i class="fas fa-sticky-note"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('settings', event)">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center gap-4">
+                            <i class="fas fa-cloud-sun text-5xl weather-icon text-amber-300"></i>
+                            <div>
+                                <h3 class="text-2xl font-medium">${
+                                  state.weather.temp
+                                }°C</h3>
+                                <p class="text-sm opacity-75">${
+                                  state.weather.condition
+                                }</p>
+                            </div>
+                        </div>
+                        <div class="mt-6 grid grid-cols-2 gap-3 text-sm">
+                            <div class="bg-white/5 p-4 rounded-lg">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-tint text-blue-400"></i>
+                                    <span>Humidity</span>
+                                </div>
+                                <div class="mt-2 text-lg font-medium">${
+                                  state.weather.humidity
+                                }%</div>
+                            </div>
+                            <div class="bg-white/5 p-4 rounded-lg">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-wind text-blue-400"></i>
+                                    <span>Wind</span>
+                                </div>
+                                <div class="mt-2 text-lg font-medium">${
+                                  state.weather.wind
+                                } km/h</div>
+                            </div>
+                            <div class="bg-white/5 p-4 rounded-lg">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-temperature-low text-red-400"></i>
+                                    <span>Feels Like</span>
+                                </div>
+                                <div class="mt-2 text-lg font-medium">${
+                                  state.weather.temp + 2
+                                }°C</div>
+                            </div>
+                            <div class="bg-white/5 p-4 rounded-lg">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-map-marker-alt text-green-400"></i>
+                                    <span>Location</span>
+                                </div>
+                                <div class="mt-2 text-lg font-medium">${
+                                  state.weather.location
+                                }</div>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <button class="btn btn-primary ripple w-full" onclick="refreshWeather()">
+                                <i class="fas fa-sync-alt mr-2"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+      }
+
+      // Render settings content
+      function renderSettingsContent() {
+        return `
+                <div class="px-4 pb-4">
+                    <div class="border-t pt-1 ${
+                      state.isDarkMode
+                        ? "border-gray-700/50"
+                        : "border-gray-200/50"
+                    }">
+                        <div class="mt-1 flex justify-center">
+                            <div class="quick-actions">
+                                <button class="icon-btn ripple" onclick="switchToType('notification', event)">
+                                    <i class="fas fa-bell"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('music', event)">
+                                    <i class="fas fa-music"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('timer', event)">
+                                    <i class="fas fa-clock"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('note', event)">
+                                    <i class="fas fa-sticky-note"></i>
+                                </button>
+                                <button class="icon-btn ripple" onclick="switchToType('weather', event)">
+                                    <i class="fas fa-cloud-sun"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-4 space-y-1">
+                            <div class="settings-toggle">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-moon text-purple-400"></i>
+                                    <span>Dark Mode</span>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" ${
+                                      state.settings.darkMode ? "checked" : ""
+                                    } onchange="toggleSetting('darkMode')">
+                                    <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+                            <div class="settings-toggle">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-running text-blue-400"></i>
+                                    <span>Animations</span>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" ${
+                                      state.settings.animations ? "checked" : ""
+                                    } onchange="toggleSetting('animations')">
+                                    <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+                            <div class="settings-toggle">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-volume-up text-green-400"></i>
+                                    <span>Sound</span>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" ${
+                                      state.settings.sound ? "checked" : ""
+                                    } onchange="toggleSetting('sound')">
+                                    <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+                            <div class="settings-toggle">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-bell text-yellow-400"></i>
+                                    <span>Notifications</span>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" ${
+                                      state.settings.notifications
+                                        ? "checked"
+                                        : ""
+                                    } onchange="toggleSetting('notifications')">
+                                    <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <button class="btn btn-primary ripple w-full" onclick="showSystemInfo()">
+                                <i class="fas fa-info-circle mr-2"></i> System Info
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+      }
+
+      // Event handlers
+      function handleMainClick() {
+        if (!state.expanded) {
+          state.expanded = true;
+          render();
+        }
+      }
+
+      function toggleExpand(event) {
+        if (event) event.stopPropagation();
+        state.expanded = !state.expanded;
+        render();
+      }
+
+      function toggleQuickActions(event) {
+        if (event) event.stopPropagation();
+        state.showQuickActions = !state.showQuickActions;
+        render();
+      }
+
+      function switchToType(type, event) {
+        if (event) event.stopPropagation();
+        state.type = type;
+        state.hasContent = true;
+        state.defaultIcon = false;
+        state.showQuickActions = false;
+
+        // Reset timer if switching to timer
+        if (type === "timer") {
+          state.timer.time = state.timer.initialTime;
+          state.timer.isRunning = false;
+        }
+
+        render();
+      }
+
+      function toggleMusicPlay(event) {
+        if (event) event.stopPropagation();
+        state.music.isPlaying = !state.music.isPlaying;
+        render();
+      }
+
+      function skipBackward(event) {
+        if (event) event.stopPropagation();
+        state.music.currentTime = Math.max(0, state.music.currentTime - 15);
+        render();
+      }
+
+      function skipForward(event) {
+        if (event) event.stopPropagation();
+        state.music.currentTime = Math.min(
+          state.music.duration,
+          state.music.currentTime + 15
+        );
+        render();
+      }
+
+      function seekMusic(event) {
+        if (event) event.stopPropagation();
+        const progressBar = event.currentTarget;
+        const clickPosition =
+          event.clientX - progressBar.getBoundingClientRect().left;
+        const progressBarWidth = progressBar.clientWidth;
+        const seekPercentage = (clickPosition / progressBarWidth) * 100;
+        state.music.currentTime = Math.floor(
+          (seekPercentage / 100) * state.music.duration
+        );
+        render();
+      }
+
+      function setVolume(volume) {
+        // In a real app, this would control the audio volume
+        alert(`Volume set to ${volume}%`);
+      }
+
+      function toggleTimer(event) {
+        if (event) event.stopPropagation();
+        state.timer.isRunning = !state.timer.isRunning;
+
+        if (state.timer.isRunning) {
+          // Start timer countdown
+          state.timerInterval = setInterval(() => {
+            if (state.timer.time > 0) {
+              state.timer.time--;
+              render();
+            } else {
+              clearInterval(state.timerInterval);
+              state.timer.isRunning = false;
+              alert("Timer finished!");
+              render();
+            }
+          }, 1000);
+        } else {
+          // Pause timer
+          if (state.timerInterval) {
+            clearInterval(state.timerInterval);
+          }
+        }
+
+        render();
+      }
+
+      function resetTimer(event) {
+        if (event) event.stopPropagation();
+        state.timer.time = state.timer.initialTime;
+        state.timer.isRunning = false;
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+        }
+        render();
+      }
+
+      function setTimer(seconds) {
+        state.timer.initialTime = seconds;
+        state.timer.time = seconds;
+        state.timer.isRunning = false;
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+        }
+        render();
+      }
+
+      function clearNote() {
+        const textarea = document.querySelector(".note-editor");
+        textarea.value = "";
+      }
+
+      function saveNote() {
+        const textarea = document.querySelector(".note-editor");
+        state.note.content = textarea.value;
+        alert("Note saved successfully!");
+        render();
+      }
+
+      function refreshWeather() {
+        // Simulate API call with loading state
+        const weatherIcon = document.querySelector(".weather-icon");
+        if (weatherIcon) {
+          weatherIcon.classList.add("animate-spin");
+        }
+
+        setTimeout(() => {
+          state.weather.temp = Math.round(Math.random() * 10 + 20); // Random temp between 20-30
+          state.weather.humidity = Math.round(Math.random() * 30 + 50); // Random humidity 50-80%
+          state.weather.wind = Math.round(Math.random() * 20 + 5); // Random wind 5-25 km/h
+
+          const conditions = [
+            "Sunny",
+            "Cloudy",
+            "Partly Cloudy",
+            "Rainy",
+            "Thunderstorm",
+          ];
+          state.weather.condition =
+            conditions[Math.floor(Math.random() * conditions.length)];
+
+          if (weatherIcon) {
+            weatherIcon.classList.remove("animate-spin");
+          }
+
+          render();
+        }, 1500);
+      }
+
+      function toggleSetting(setting) {
+        state.settings[setting] = !state.settings[setting];
+
+        if (setting === "darkMode") {
+          state.isDarkMode = state.settings.darkMode;
+          document.body.classList.toggle("dark", state.isDarkMode);
+          document.body.classList.toggle("bg-gray-900", state.isDarkMode);
+          document.body.classList.toggle("bg-gray-100", !state.isDarkMode);
+          document.body.classList.toggle("text-white", state.isDarkMode);
+          document.body.classList.toggle("text-black", !state.isDarkMode);
+        }
+
+        render();
+      }
+
+      function showSystemInfo() {
+        alert(
+          `System Information:\n\nPlatform: ${navigator.platform}\nUser Agent: ${navigator.userAgent}\nScreen: ${window.screen.width}x${window.screen.height}`
+        );
+      }
+
+      function handleAction(actionText) {
+        const action = state.notification.actions.find(
+          (a) => a.text === actionText
+        );
+        if (action && action.handler) {
+          action.handler();
+        }
+      }
+
+      // Helper functions
+      function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins.toString().padStart(2, "0")}:${secs
+          .toString()
+          .padStart(2, "0")}`;
+      }
+
+      // Ripple effect
+      function addRippleEffects() {
+        const buttons = document.querySelectorAll(".ripple");
+
+        buttons.forEach((button) => {
+          button.addEventListener("click", function (e) {
+            e.stopPropagation();
+
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const ripple = document.createElement("span");
+            ripple.className = "ripple-effect";
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+
+            this.appendChild(ripple);
+
+            setTimeout(() => {
+              ripple.remove();
+            }, 600);
+          });
+        });
+      }
+
+      // Demo functions
+      function showNotification() {
+        state.type = "notification";
+        state.hasContent = true;
+        state.defaultIcon = false;
+        state.expanded = true;
+        render();
+      }
+
+      function showMusicPlayer() {
+        state.type = "music";
+        state.hasContent = true;
+        state.defaultIcon = false;
+        state.expanded = true;
+        render();
+      }
+
+      function showTimer() {
+        state.type = "timer";
+        state.hasContent = true;
+        state.defaultIcon = false;
+        state.expanded = true;
+        render();
+      }
+
+      function showNote() {
+        state.type = "note";
+        state.hasContent = true;
+        state.defaultIcon = false;
+        state.expanded = true;
+        render();
+      }
+
+      function showWeather() {
+        state.type = "weather";
+        state.hasContent = true;
+        state.defaultIcon = false;
+        state.expanded = true;
+        render();
+      }
+
+      function showSettings() {
+        state.type = "settings";
+        state.hasContent = true;
+        state.defaultIcon = false;
+        state.expanded = true;
+        render();
+      }
+
+      function toggleDarkMode() {
+        state.isDarkMode = !state.isDarkMode;
+        document.body.classList.toggle("dark", state.isDarkMode);
+        document.body.classList.toggle("bg-gray-900", state.isDarkMode);
+        document.body.classList.toggle("bg-gray-100", !state.isDarkMode);
+        document.body.classList.toggle("text-white", state.isDarkMode);
+        document.body.classList.toggle("text-black", !state.isDarkMode);
+        render();
+      }
+
+      // Setup event listeners
+      function setupEventListeners() {
+        // Music progress simulation
+        setInterval(() => {
+          if (
+            state.music.isPlaying &&
+            state.music.currentTime < state.music.duration
+          ) {
+            state.music.currentTime++;
+            if (state.type === "music" && state.expanded) {
+              render();
+            }
+          }
+        }, 1000);
+      }
+
+      // Initialize the app
+      init();
+    </script>
+  </body>
+</html>
